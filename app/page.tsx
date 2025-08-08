@@ -208,7 +208,7 @@ export default function BARTTask() {
   }
 
   const [countdown, setCountdown] = React.useState(15)
-  const [baseRedirectUrl] = React.useState("http://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=462821&lang=es-AR") // CAMBIAR ESTE LINK
+  const [baseRedirectUrl] = React.useState("https://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=892672&newtest=Y&lang=es") // CAMBIAR ESTE LINK
 
   React.useEffect(() => {
     if (gameState !== "results") return
