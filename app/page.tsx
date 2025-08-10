@@ -146,7 +146,7 @@ export default function BARTTask() {
       setGameState("instructions")
     } else {
       // Redirección inmediata si no acepta
-      const baseRedirectUrl = "http://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=462821&lang=es-AR"
+      const baseRedirectUrl = "https://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=892672&newtest=Y&lang=es"
       const urlParams = new URLSearchParams()
       urlParams.append('consentimiento_aceptado', 'no')
       urlParams.append('timestamp', new Date().toISOString())
