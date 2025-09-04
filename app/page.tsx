@@ -459,7 +459,7 @@ export default function BARTTask() {
                   <li>• Vas a ver 10 globos, uno por vez. Podes inflarlos todas las veces que quieras.</li>
                   <li>• Cada inflada te da <strong>5 puntos</strong>.</li>
                   <li>• Podés <strong>cobrar</strong> tus puntos en cualquier momento. Si el globo <strong>explota</strong>, perdés todos los puntos de ese globo.</li>
-                  <li>• Al final del juego podrás ver tus resultados.</li>
+                  <li>• Al <strong>final</strong> de la <strong>encuesta</strong> podrás ver tus resultados.</li>
                 </ul>
               </div>
 
