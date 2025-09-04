@@ -29,6 +29,10 @@ export default function BARTTask() {
   const [showSuccess, setShowSuccess] = useState(false)
   const [consentAccepted, setConsentAccepted] = useState<boolean | null>(null)
   const [showInformation, setShowInformation] = useState(false)
+  const [countdown, setCountdown] = React.useState(3)
+  const [baseRedirectUrl] = React.useState(
+    "https://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=892672&newtest=Y&lang=es",
+  ) // CAMBIAR ESTE LINK
 
   const inflateBalloon = () => {
     if (isExploding || showSuccess) return
@@ -188,50 +192,45 @@ export default function BARTTask() {
     return Math.min(baseSize + sizeIncrease, maxSize)
   }
 
-  const [countdown, setCountdown] = React.useState(3)
-  const [baseRedirectUrl] = React.useState(
-    "https://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=892672&newtest=Y&lang=es",
-  ) // CAMBIAR ESTE LINK
-
   React.useEffect(() => {
     if (gameState !== "results") return
-
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
-          // Crear URL con resultados como parámetros
-          const results = calculateResults()
-          const urlParams = new URLSearchParams()
-
-          // Agregar parámetros de resultados a la URL
-          urlParams.append("timestamp", new Date().toISOString())
-          urlParams.append("consentimiento_aceptado", consentAccepted ? "si" : "no")
-          urlParams.append("promedio_ajustado", results.promedio_ajustado.toString())
-          urlParams.append("promedio_no_ajustado", results.promedio_no_ajustado.toString())
-          urlParams.append("total_globos_explotados", results.total_globos_explotados.toString())
-          urlParams.append("max_infladas", results.max_infladas.toString())
-          urlParams.append("total_puntos", results.total_puntos.toString())
-
-          // Construir URL final
-          const separator = baseRedirectUrl.includes("?") ? "&" : "?"
-          const finalUrl = `${baseRedirectUrl}${separator}${urlParams.toString()}`
-
-          console.log("Redirigiendo con resultados:", finalUrl)
-          window.location.href = finalUrl
           return 0
         }
         return prev - 1
       })
     }, 1000)
 
-    return () => clearInterval(timer)
-  }, [gameState, baseRedirectUrl, consentAccepted])
-
-  React.useEffect(() => {
-    if (gameState === "results") {
-      setCountdown(3)
+    return () => {
+      clearInterval(timer)
     }
   }, [gameState])
+
+  React.useEffect(() => {
+    if (countdown === 0 && gameState === "results") {
+      // Crear URL con resultados como parámetros
+      const results = calculateResults()
+      const urlParams = new URLSearchParams()
+
+      // Agregar parámetros de resultados a la URL
+      urlParams.append("timestamp", new Date().toISOString())
+      urlParams.append("consentimiento_aceptado", consentAccepted ? "si" : "no")
+      urlParams.append("promedio_ajustado", results.promedio_ajustado.toString())
+      urlParams.append("promedio_no_ajustado", results.promedio_no_ajustado.toString())
+      urlParams.append("total_globos_explotados", results.total_globos_explotados.toString())
+      urlParams.append("max_infladas", results.max_infladas.toString())
+      urlParams.append("total_puntos", results.total_puntos.toString())
+
+      // Construir URL final
+      const separator = baseRedirectUrl.includes("?") ? "&" : "?"
+      const finalUrl = `${baseRedirectUrl}${separator}${urlParams.toString()}`
+
+      console.log("Redirigiendo con resultados:", finalUrl)
+      window.location.href = finalUrl
+    }
+  }, [gameState, countdown])
 
   const handleReturnToSurvey = () => {
     // Crear URL con resultados como parámetros
@@ -268,6 +267,9 @@ export default function BARTTask() {
               <div className="mt-6 pt-4 border-t border-gray-200">
                 <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
                   <div className="flex flex-col items-center">
+                    <img src="/images/logo-conicet.png" alt="CONICET" className="h-16 md:h-20 object-contain" />
+                  </div>
+                  <div className="flex flex-col items-center">
                     <img
                       src="/images/logo-iipsi.png"
                       alt="Instituto de Investigaciones Psicológicas - IIPSI"
@@ -280,9 +282,6 @@ export default function BARTTask() {
                       alt="Universidad Nacional de Córdoba - UNC"
                       className="h-16 md:h-20 object-contain"
                     />
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <img src="/images/logo-conicet.jpeg" alt="CONICET" className="h-16 md:h-20 object-contain" />
                   </div>
                   <div className="flex flex-col items-center">
                     <img src="/images/logo-eepsic.png" alt="EEPSIC Argentina" className="h-20 md:h-24 object-contain" />
@@ -312,173 +311,74 @@ export default function BARTTask() {
 
                     <div className="space-y-4 text-sm">
                       <div className="bg-blue-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-blue-800 mb-2">Información sobre salud mental</h4>
-                        <p className="mb-2">
-                          Dado que el estudio trata temas que pueden resultar sensibles, te informamos que en caso de
-                          sentirte incómodo/a o necesitar apoyo psicológico, podés recurrir a los siguientes recursos de
-                          atención en salud mental:
-                        </p>
-                        <ul className="list-disc list-inside space-y-1 ml-4">
-                          <li>
-                            Si te encontrás en la Provincia de Córdoba, podés consultar los siguientes enlaces para
-                            obtener más información sobre los servicios disponibles en salud mental:
-                            <ul className="list-disc list-inside ml-4 mt-1">
-                              <li>
-                                <a
-                                  href="https://www.cba.gov.ar/direccion-de-salud-mental/"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-blue-600 hover:text-blue-800 underline inline-flex items-center gap-1"
-                                >
-                                  Dirección de Salud Mental - Gobierno de Córdoba
-                                  <ExternalLink className="w-3 h-3" />
-                                </a>
-                              </li>
-                              <li>Material de difusión - Secretaría de Salud Mental</li>
+                        <h4 className="font-semibold text-blue-800 mb-2">Recursos de apoyo en salud mental</h4>
+                        <p className="mb-2">Si en algún momento te sentís incómodo/a o necesitás apoyo psicológico, podés recurrir a:</p>
+                            <ul className="list-disc list-inside space-y-1 text-sm">
+                            <li><strong>Línea gratuita de salud mental:</strong> 0800 999 0091.</li>
+                            <li><strong>Línea gratuita de violencia:</strong> (011) 3133-1000 - Línea 137.</li>
                             </ul>
-                          </li>
-                          <li>
-                            Si residís en otra provincia de Argentina, te recomendamos visitar la página del Ministerio
-                            de Salud correspondiente a tu localidad o acercarte al centro de salud más cercano. También
-                            podés consultar la Línea Nacional de Salud Mental a través del número 0800-345-1435 o su
-                            página web:
-                            <a
-                              href="https://www.argentina.gob.ar/salud/"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-600 hover:text-blue-800 underline inline-flex items-center gap-1 ml-1"
-                            >
-                              https://www.argentina.gob.ar/salud/
-                              <ExternalLink className="w-3 h-3" />
-                            </a>
-                          </li>
-                        </ul>
                       </div>
-
-                      <div className="bg-red-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-red-800 mb-2">Líneas de asistencia en violencia de género</h4>
-                        <p className="mb-2">
-                          En caso de estar atravesando una situación de violencia de género, te informamos que podés
-                          acceder a la siguiente línea de asistencia:
-                        </p>
-                        <ul className="list-disc list-inside ml-4">
-                          <li>
-                            <strong>Línea 144:</strong> Asesoramiento y contención para situaciones de violencia de
-                            género. Disponible las 24 horas todos los días del año.
-                          </li>
-                        </ul>
-                      </div>
-
                       <div className="bg-green-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-green-800 mb-2">Información importante</h4>
-                        <p>
-                          Si residís en Argentina y tenés más de 18 años, sos invitado/a a participar en una encuesta en
-                          línea relacionada con creencias, ideas y conductas que algunas personas pueden experimentar.
-                          La investigación tiene como objetivo profundizar en el conocimiento de experiencias
-                          psicológicas que pueden influir en el bienestar integral de las personas. Este estudio está
-                          coordinado por el Grupo de Investigación en Violencia del Instituto de Investigaciones
-                          Psicológicas (IIPSI - UNC - CONICET).
-                        </p>
+                        <h4 className="font-semibold text-green-800 mb-2">Información sobre el estudio</h4>
+                        <ul className="list-disc list-inside space-y-1 text-sm">
+                          <li><strong>Quiénes pueden participar:</strong> Personas mayores de 18 años que residan en Argentina.</li>
+                          <li><strong>Objetivo:</strong> Explorar cómo ciertos estados mentales se relacionan con la violencia, para generar conocimiento y políticas públicas basadas en evidencia.</li>
+                          <li><strong>Contenido:</strong>Preguntas sobre historia personal, creencias, emociones y experiencias relacionadas con violencia.</li>
+                          <li><strong>Suspensión de participación:</strong> Podés interrumpir la encuesta en cualquier momento sin penalización.</li>
+                        </ul>
                       </div>
-
                       <div className="bg-purple-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-purple-800 mb-2">Objetivos del estudio</h4>
-                        <p>
-                          El estudio tiene como objetivo explorar cómo algunos estados mentales complejos se relacionan
-                          con la violencia. En la encuesta se te harán preguntas sobre temas delicados que incluyen
-                          experiencias de violencia. Se te preguntará acerca de tu historia personal, creencias,
-                          emociones y situaciones en las que hayas experimentado violencia. Si en algún momento las
-                          preguntas te resultan demasiado incómodas, podrás suspender tu participación sin ningún tipo
-                          de penalización. El propósito de estas preguntas es contribuir a la comprensión de las
-                          relaciones entre estados mentales complejos y la violencia para mejorar el tratamiento y apoyo
-                          a las personas afectadas por estos problemas.
-                        </p>
+                        <h4 className="font-semibold text-purple-800 mb-2">Duración y confidencialidad</h4>
+                        <ul className="list-disc list-inside space-y-1 text-sm">
+                          <li>Tiempo estimado: <strong>aprox. 45 minutos.</strong></li>
+                          <li>Tus respuestas son <strong>anónimas</strong>: no se recopilan datos que te identifiquen (nombre, fecha de nacimiento, etc.).</li>
+                          <li>La información será <strong>procesada de manera grupal</strong> y almacenada de forma segura.</li>
+                          <li>Si querés recibir publicaciones relacionadas, podés dejar tu correo al final; se guardará por separado y cifrado.</li>
+                        </ul>
                       </div>
-
                       <div className="bg-yellow-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-yellow-800 mb-2">Duración y confidencialidad</h4>
-                        <p>
-                          Te pedimos que completes la encuesta en una sola sesión, la cual tomará aproximadamente 45
-                          minutos. Todos los datos que nos proporciones serán tratados de manera confidencial y
-                          almacenados de forma segura. La información recopilada no incluirá tu nombre, fecha de
-                          nacimiento, ni otro dato que permita identificarte personalmente. Las respuestas anónimas sólo
-                          serán accesibles a través del correo institucional de la investigadora principal del estudio,
-                          y se procesarán de manera grupal para garantizar el anonimato. Si deseas recibir publicaciones
-                          relacionadas con este estudio, podrás dejar tu correo electrónico al final de la encuesta.
-                          Este dato será guardado de manera separada, en un documento cifrado, para garantizar tu
-                          privacidad.
-                        </p>
+                        <h4 className="font-semibold text-yellow-800 mb-2">Riesgos y retiro de datos</h4>
+                        <ul className="list-disc list-inside space-y-1 text-sm">
+                          <li>El estudio no implica riesgos graves, aunque algunas preguntas pueden generar incomodidad.</li>
+                          <li>Podés retirar tus datos hasta que sean incluidos en los resultados globales.</li>
+                        </ul>
                       </div>
-
                       <div className="bg-orange-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-orange-800 mb-2">Riesgos y suspensión de participación</h4>
-                        <p>
-                          Este estudio no conlleva riesgos graves, aunque se anticipa que algunas preguntas puedan
-                          resultar incómodas o generar malestar debido a la naturaleza sensible de los temas tratados.
-                          Podrás interrumpir tu participación en cualquier momento sin necesidad de justificación, y sin
-                          que esto te cause ningún perjuicio. Además, si decidís retirar tus datos, podrás hacerlo hasta
-                          el momento en que estos sean incluidos en los resultados globales (cuando ya no podrán ser
-                          identificados individualmente).
-                        </p>
+                        <h4 className="font-semibold text-orange-800 mb-2">Beneficios y compensación</h4>
+                        <ul className="list-disc list-inside space-y-1 text-sm">
+                          <li>Con tu participación contribuís al conocimiento sobre la relación entre experiencias psicológicas y conducta, ayudando a la prevención de la violencia y al bienestar general.</li>
+                          <li><strong>No hay compensación económica</strong> por participar.</li>
+                        </ul>
                       </div>
-
                       <div className="bg-teal-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-teal-800 mb-2">Beneficios y compensación</h4>
-                        <p>
-                          Con tu participación colaboras a mejorar el conocimiento sobre la forma en que ciertas
-                          experiencias psicológicas influyen en la conducta de las personas y, en consecuencia, mejorar
-                          la prevención de la violencia y aumentar el bienestar de las personas. No recibirás
-                          compensación económica ni de ningún otro tipo por participar en este estudio.
-                        </p>
+                        <h4 className="font-semibold text-teal-800 mb-2">Protección de datos</h4>
+                        <ul className="list-disc list-inside space-y-1 text-sm">
+                          <li>Tus datos se usarán exclusivamente para fines académicos y científicos, según la Ley 25.326.</li>
+                          <li>Los resultados podrán publicarse, <strong>sin incluir información que permita identificar a los participantes.</strong></li>
+                        </ul>
                       </div>
-
                       <div className="bg-indigo-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-indigo-800 mb-2">Protección de datos</h4>
-                        <p className="mb-2">
-                          Al dar tu consentimiento informado, no renuncias a ninguno de los derechos que te otorgan las
-                          leyes de protección de datos personales en Argentina, particularmente la ley 25.326. Los datos
-                          que aportes serán utilizados exclusivamente para fines académicos y científicos. Los
-                          resultados del estudio podrán ser presentados o publicados en eventos científicos o artículos,
-                          pero no incluirán información que permita identificar a los participantes.
-                        </p>
-                        <p>
-                          Además, si tenés dudas sobre el estudio o necesitas asistencia inmediata, podés comunicarte
-                          con la investigadora principal del proyecto, Lic. Carolina Rinaldi, a través de su correo
-                          electrónico:
-                          <a
+                        <h4 className="font-semibold text-indigo-800 mb-2">Contactos</h4>
+                        <ul className="list-disc list-inside space-y-1 text-sm">
+                          <li><strong>Investigadora principal:</strong> <a
                             href="mailto:carolina.rinaldi@mi.unc.edu.ar"
                             className="text-blue-600 hover:text-blue-800 underline ml-1"
                           >
                             carolina.rinaldi@mi.unc.edu.ar
-                          </a>
-                          ; o con la investigadora responsable del proyecto:
-                          <a
+                          </a></li> 
+                          <li><strong>Investigadora responsable:</strong> <a
                             href="mailto:k_arbach@unc.edu.ar"
                             className="text-blue-600 hover:text-blue-800 underline ml-1"
                           >
                             k_arbach@unc.edu.ar
-                          </a>
-                        </p>
-                      </div>
-
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-gray-800 mb-2">Contacto del Comité de Ética</h4>
-                        <p>
-                          Para consultas relacionadas con el diseño del estudio o si deseas realizar alguna pregunta
-                          sobre su participación, podés contactar al Comité de Ética que aprobó esta investigación:
-                        </p>
-                        <p className="mt-1">
-                          <strong>Correo electrónico:</strong>
-                          <a
+                          </a></li> 
+                          <li><strong>Comité de Ética:</strong> <a
                             href="mailto:comite.etica.iipsi@psicología.unc.edu.ar"
                             className="text-blue-600 hover:text-blue-800 underline ml-1"
                           >
                             comite.etica.iipsi@psicología.unc.edu.ar
-                          </a>
-                        </p>
-                        <p className="mt-2 italic">
-                          Agradecemos profundamente tu disposición para participar en este estudio y tu tiempo.
-                        </p>
+                          </a></li>
+                        </ul>
                       </div>
                     </div>
                   </div>
@@ -494,22 +394,19 @@ export default function BARTTask() {
                   <div className="bg-blue-50 p-4 rounded-lg">
                     <p className="mb-3">Al aceptar los términos de participación indicás que:</p>
                     <ul className="list-disc list-inside space-y-1 text-sm">
-                      <li>Sos mayor de 18 años</li>
-                      <li>Residís en Argentina</li>
-                      <li>Entendés que tu participación es voluntaria y podés retirarte en cualquier momento</li>
-                      <li>Aceptás el procedimiento informado</li>
-                      <li>Comprendés que no corrés ningún riesgo (conocido o esperado) por participar</li>
-                      <li>Entendés que no recibirás remuneración u otros beneficios por participar</li>
+                      <li>Sos <strong>mayor de 18 años y residís en Argentina.</strong></li>
+                      <li>Tu participación es <strong>voluntaria</strong> y podés <strong>retirarte en cualquier momento.</strong></li>
+                      <li>Conocés y aceptás el <strong>procedimiento informado.</strong></li>
+                      <li>La participación <strong>no implica riesgos conocidos.</strong></li>
+                      <li>No recibirás <strong>remuneración ni beneficios por participar.</strong></li>
                       <li>
-                        Aceptás que los resultados se publiquen en reuniones o publicaciones científicas, manteniendo
-                        siempre la reserva de los datos personales
+                        Los resultados podrán publicarse en ámbitos científicos, siempre con <strong>reserva de tus datos personales.</strong>
                       </li>
                     </ul>
                   </div>
-
                   <div className="text-center">
                     <p className="mb-4 font-medium">
-                      Por favor, indicá si estás de acuerdo o no con los términos de participación:
+                      Por favor, indicá si <strong>aceptas o no</strong> los términos de participación:
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -549,7 +446,7 @@ export default function BARTTask() {
           <Card className="mt-8">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-bold text-blue-800">
-                Tarea del Globo Analógico de Riesgo (BART)
+                JUEGO DEL GLOBO 🎈
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -559,15 +456,10 @@ export default function BARTTask() {
                   Instrucciones
                 </h3>
                 <ul className="space-y-2 text-sm">
-                  <li>• Verás una serie de 10 globos, uno a la vez</li>
-                  <li>• Cada vez que inflés un globo, ganarás 5 puntos </li>
-                  <li>• Puedes inflar el globo <strong>tantas veces como quieras</strong></li>
-                  <li>• En cualquier momento puedes hacer clic en "Cobrar puntos" para guardar tus ganancias</li>
-                  <li>
-                    • <strong>¡CUIDADO!</strong> Si el globo explota, perderás todos los puntos de ese globo
-                  </li>
-                  <li>• Cada globo tiene un <strong>punto de explosión desconocido</strong> y diferente</li>
-                  <li>• Tu objetivo es <strong>ganar</strong> la mayor cantidad de <strong>puntos</strong> posible</li>
+                  <li>• Vas a ver 10 globos, uno por vez. Podes inflarlos todas las veces que quieras.</li>
+                  <li>• Cada inflada te da <strong>5 puntos</strong>.</li>
+                  <li>• Podés <strong>cobrar</strong> tus puntos en cualquier momento. Si el globo <strong>explota</strong>, perdés todos los puntos de ese globo.</li>
+                  <li>• Al final del juego podrás ver tus resultados.</li>
                 </ul>
               </div>
 
@@ -741,7 +633,7 @@ export default function BARTTask() {
             className="w-full h-12 text-lg"
             size="lg"
           >
-            🎈 Inflar Globo (+5 puntos)
+            🎈 Inflar Globo
           </Button>
 
           <Button
@@ -751,7 +643,7 @@ export default function BARTTask() {
             className="w-full h-12 text-lg bg-transparent"
             size="lg"
           >
-            💰 Cobrar Puntos ({currentPoints} puntos)
+            💰 Cobrar Puntos 
           </Button>
         </div>
 
