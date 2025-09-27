@@ -361,10 +361,10 @@ export default function BARTTask() {
                           .
                               Para consultas técnicas sobre la plataforma o su funcionamiento, podés contactar al Técnico
                               en Informática de este estudio: Mateo Marañón;<a
-                            href="mailto:mateomaranon@mi.unc.edu.ar"
+                            href="mailto:mateo.maranon@mi.unc.edu.ar"
                             className="text-blue-600 hover:text-blue-800 underline ml-1"
                           >
-                            mateomaranon@mi.unc.edu.ar
+                            mateo.maranon@mi.unc.edu.ar
                           </a>.
                           </li>
                         </ul>
