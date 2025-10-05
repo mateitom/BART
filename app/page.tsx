@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Play, Info, CheckCircle, XCircle, ChevronDown, ChevronUp, ExternalLink, AlignJustify } from "lucide-react"
+import Link from "next/link"
 
 interface BalloonData {
   globo: number
@@ -268,7 +269,7 @@ export default function BARTTask() {
                 <Button
                   onClick={() => setShowInformation(!showInformation)}
                   variant="outline"
-                  className="w-full flex items-center justify-between p-4 h-auto"
+                  className="w-full flex items-center justify-between p-4 h-auto whitespace-normal"
                 >
                   <span className="flex items-center gap-2">
                     <Info className="w-5 h-5" />
@@ -282,105 +283,108 @@ export default function BARTTask() {
                   <div className="mt-4 border rounded-lg p-4 bg-white max-h-96 overflow-y-auto">
                     <div className="space-y-4 text-sm">
                       <div className="bg-blue-50 p-4 rounded-lg">
-                        <p className="mb-2" style={{textAlign: "justify"}}>
-                          Bienvenido/a. Si sos <strong>mayor de 18 años</strong> y <strong>residís en Argentina</strong>, 
-                          te invitamos a responder una encuesta poblacional denominada “Estudio sobre Experiencias Psicológicas 
-                          y Conductas 2” que nuestro grupo de investigación de CONICET y la Universidad Nacional de Córdoba está distribuyendo a través de internet. 
-                          Nuestro objetivo es identificar qué estados mentales en la población argentina se asocian con el riesgo de violencia. Con este conocimiento, 
-                          podremos diseñar recomendaciones para disminuir este riesgo. 
+                        <p className="mb-2" style={{ textAlign: "justify" }}>
+                          Bienvenido/a. Si sos <strong>mayor de 18 años</strong> y <strong>residís en Argentina</strong>,
+                          te invitamos a responder una encuesta poblacional denominada “Estudio sobre Experiencias Psicológicas
+                          y Conductas 2” que nuestro grupo de investigación de CONICET y la Universidad Nacional de Córdoba está distribuyendo a través de internet.
+                          Nuestro objetivo es identificar qué estados mentales en la población argentina se asocian con el riesgo de violencia. Con este conocimiento,
+                          podremos diseñar recomendaciones para disminuir este riesgo.
                         </p>
                       </div>
                       <div className="bg-green-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-green-800 mb-2">Metodología</h4>
-                        <p className="mb-2" style={{textAlign: "justify"}}>
-                          Te pedimos que de manera <strong>voluntaria</strong> respondas una serie de preguntas sobre tu historia personal, 
-                          tus experiencias psicológicas y tus conductas habituales en diferentes aspectos de tu vida. 
-                          Responder la encuesta te llevará entre 20 a 40 minutos. Tu participación no conlleva más riesgos que 
-                          cierta incomodidad al compartir información de carácter personal. 
+                        <p className="mb-2" style={{ textAlign: "justify" }}>
+                          Te pedimos que de manera <strong>voluntaria</strong> respondas una serie de preguntas sobre tu historia personal,
+                          tus experiencias psicológicas y tus conductas habituales en diferentes aspectos de tu vida.
+                          Responder la encuesta te llevará entre 20 a 40 minutos. Tu participación no conlleva más riesgos que
+                          cierta incomodidad al compartir información de carácter personal.
                           Te dejaremos contactos de servicios de salud mental en caso que desees consultar con un profesional.
                         </p>
                       </div>
                       <div className="bg-purple-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-purple-800 mb-2">Confidencialidad</h4>
-                        <p className="mb-2" style={{textAlign: "justify"}}>
-                          No te solicitamos ningún dato que permita tu identificación personal como nombre, apellido o DNI. 
-                          Tus respuestas sólo se emplearán a los fines de este estudio y se analizarán de manera grupal, así que no será 
-                          posible conocer respuestas individuales. 
+                        <p className="mb-2" style={{ textAlign: "justify" }}>
+                          No te solicitamos ningún dato que permita tu identificación personal como nombre, apellido o DNI.
+                          Tus respuestas sólo se emplearán a los fines de este estudio y se analizarán de manera grupal, así que no será
+                          posible conocer respuestas individuales.
                           Es decir que <strong>tus respuestas son</strong> totalmente <strong>confidenciales</strong> y <strong>anónimas</strong>.
                           Podés abandonar la encuesta en cualquier momento. Las respuestas que ya hayas brindado hasta ese momento quedarán guardadas, no pueden retirarse pues no tenemos forma de identificar la identidad de quien responde.
-                          Los datos se archivarán de manera segura en una plataforma virtual de la Universidad Nacional de Córdoba con acceso cifrado al que sólo tiene acceso el equipo de investigación. 
+                          Los datos se archivarán de manera segura en una plataforma virtual de la Universidad Nacional de Córdoba con acceso cifrado al que sólo tiene acceso el equipo de investigación.
                           Si querés recibir información sobre tus resultados, al final de la encuesta tendrás la opción de solicitarlo. Este dato será guardado de manera separada, en un documento cifrado, para garantizar tu privacidad.
                         </p>
                       </div>
                       <div className="bg-yellow-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-yellow-800 mb-2">Justificación y utilidad de tu participación</h4>
-                        <p className="mb-2" style={{textAlign: "justify"}}>
-                          Con tu participación colaborás a mejorar el conocimiento sobre cómo ciertas experiencias psicológicas influyen en la conducta de las personas y, en consecuencia, mejorar la prevención de la violencia y aumentar el bienestar de las personas. 
+                        <p className="mb-2" style={{ textAlign: "justify" }}>
+                          Con tu participación colaborás a mejorar el conocimiento sobre cómo ciertas experiencias psicológicas influyen en la conducta de las personas y, en consecuencia, mejorar la prevención de la violencia y aumentar el bienestar de las personas.
                           No recibirás remuneración ni beneficio alguno por responder esta encuesta.
-                          Al dar tu consentimiento informado (ver más abajo), no renunciás a los derechos que te otorga la Ley 25.326 de protección de datos 
-                          personales. Los resultados del estudio podrán ser difundidos en eventos o publicaciones científicas sin incluir información que 
+                          Al dar tu consentimiento informado (ver más abajo), no renunciás a los derechos que te otorga la Ley 25.326 de protección de datos
+                          personales. Los resultados del estudio podrán ser difundidos en eventos o publicaciones científicas sin incluir información que
                           permita identificar a los participantes.
-                          </p>
+                        </p>
                       </div>
                       <div className="bg-orange-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-orange-800 mb-2">Contactos</h4>
-                        <ul className="list-disc list-inside space-y-1 text-sm">
-                          <li>
-                            Si tenés dudas como participante del estudio, podés contactar al  <a
-                                  href="https://iipsi.psicologia.unc.edu.ar/etica-en-investigacion/"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-blue-600 hover:text-blue-800 underline inline-flex items-center gap-1"
-                                >
-                                  Comité de Ética del Instituto de Investigaciones Psicológicas (CONICET-UNC)
-                                  <ExternalLink className="w-3 h-3" />
-                                </a> 
-                            que aprobó esta encuesta,
-                            <a
-                            href="mailto:k_arbach@unc.edu.ar"
-                            className="text-blue-600 hover:text-blue-800 underline ml-1"
-                          >
-                            comite.etica.iipsi@psicología.unc.edu.ar.
-                          </a>
-                          </li>
-                          <li style={{textAlign: "justify"}}>
-                            Si tenés otras dudas sobre este estudio, podés contactar con la investigadora principal: Lic. Carolina Rinaldi 
-                            (Instituto de Investigaciones Psicológicas, Facultad de Psicología, UNC; Enfermera Gordillo esquina Enrique Barros s/n, 
-                            3.er piso, X5000 Córdoba;<a
-                            href="mailto:carolina.rinaldi@mi.unc.edu.ar"
-                            className="text-blue-600 hover:text-blue-800 underline ml-1"
-                          >
-                            carolina.rinaldi@mi.unc.edu.ar
-                          </a>); o 
-                            con la investigadora responsable: Dra. Karin Arbach;<a
-                            href="mailto:k_arbach@unc.edu.ar"
-                            className="text-blue-600 hover:text-blue-800 underline ml-1"
-                          >
-                            k_arbach@unc.edu.ar
-                          </a>
-                          .
+                        <div className="space-y-3 text-sm">
+                          <ul className="list-disc list-inside space-y-1 text-sm text-justify">
+                            <li>
+                              Si tenés dudas como participante del estudio, podés contactar al  <a
+                                href="https://iipsi.psicologia.unc.edu.ar/etica-en-investigacion/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:text-blue-800 underline break-all"
+                              >
+                                Comité de Ética del Instituto de Investigaciones Psicológicas (CONICET-UNC)
+                                {/* <ExternalLink className="w-3 h-3" /> */}
+                              </a> que aprobó esta encuesta,
+                              <a
+                                href="mailto:k_arbach@unc.edu.ar"
+                                className="text-blue-600 hover:text-blue-800 underline ml-1 break-all"
+                              >
+                                comite.etica.iipsi@psicología.unc.edu.ar.
+                              </a>
+                            </li>
+                            <li className="text-justify">
+                              Si tenés otras dudas sobre este estudio, podés contactar con la investigadora principal: Lic. Carolina Rinaldi
+                              (Instituto de Investigaciones Psicológicas, Facultad de Psicología, UNC; Enfermera Gordillo esquina Enrique Barros s/n,
+                              3.er piso, X5000 Córdoba;<a
+                                href="mailto:carolina.rinaldi@mi.unc.edu.ar"
+                                className="text-blue-600 hover:text-blue-800 underline ml-1 break-all"
+                              >
+                                carolina.rinaldi@mi.unc.edu.ar
+                              </a>); o
+                              con la investigadora responsable: Dra. Karin Arbach;<a
+                                href="mailto:k_arbach@unc.edu.ar"
+                                className="text-blue-600 hover:text-blue-800 underline ml-1 break-all"
+                              >
+                                k_arbach@unc.edu.ar
+                              </a>
+                              .
                               Para consultas técnicas sobre la plataforma o su funcionamiento, podés contactar al Técnico
                               en Informática de este estudio: Mateo Marañón;<a
-                            href="mailto:mateo.maranon@mi.unc.edu.ar"
-                            className="text-blue-600 hover:text-blue-800 underline ml-1"
-                          >
-                            mateo.maranon@mi.unc.edu.ar
-                          </a>.
-                          </li>
-                        </ul>
+                                href="mailto:mateo.maranon@mi.unc.edu.ar"
+                                className="text-blue-600 hover:text-blue-800 underline ml-1 break-all"
+                              >
+                                mateo.maranon@mi.unc.edu.ar
+                              </a>.
+                            </li>
+                          </ul>
+
+
+                        </div>
                       </div>
                       <div className="bg-red-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-red-800 mb-2">Si requerís atención en salud mental, podés contactar a:</h4>
                         <ul className="list-disc list-inside space-y-1 text-sm">
-                            <li>
-                              Línea nacional gratuita de urgencias en salud mental (Hospital Bonaparte): 0800 999 0091.
-                            </li>
-                            <li>
-                              Línea nacional gratuita de violencia familiar, sexual y/o grooming: 137 (marcar opción 1).
-                            </li>
+                          <li>
+                            Línea nacional gratuita de urgencias en salud mental (Hospital Bonaparte): 0800 999 0091.
+                          </li>
+                          <li>
+                            Línea nacional gratuita de violencia familiar, sexual y/o grooming: 137 (marcar opción 1).
+                          </li>
                         </ul>
                       </div>
-                      
+
                     </div>
                   </div>
                 )}
@@ -427,40 +431,40 @@ export default function BARTTask() {
                 </CardContent>
               </Card>
             </CardContent>
-          </Card>
+          </Card >
           {/* Logos institucionales */}
-            <CardHeader>
-              <div className="mt-6 pt-4 border-t border-gray-200">
-                <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
-                  <div className="flex flex-col items-center">
-                    <img src="/images/logo-conicet.png" alt="CONICET" className="h-16 md:h-20 object-contain" />
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <img
-                      src="/images/unc-logo.jpg"
-                      alt="Universidad Nacional de Córdoba - UNC"
-                      className="h-16 md:h-20 object-contain"
-                    />
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <img
-                      src="/images/logo-iipsi.png"
-                      alt="Instituto de Investigaciones Psicológicas - IIPSI"
-                      className="h-16 md:h-20 object-contain"
-                    />
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <img
-                      src="/images/logo-eepsic.png"
-                      alt="EEPSIC Argentina"
-                      className="h-16 md:h-20 object-contain"
-                    />
-                  </div>
+          < CardHeader >
+            <div className="mt-6 pt-4 border-t border-gray-200">
+              <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
+                <div className="flex flex-col items-center">
+                  <img src="/images/logo-conicet.png" alt="CONICET" className="h-16 md:h-20 object-contain" />
+                </div>
+                <div className="flex flex-col items-center">
+                  <img
+                    src="/images/unc-logo.jpg"
+                    alt="Universidad Nacional de Córdoba - UNC"
+                    className="h-16 md:h-20 object-contain"
+                  />
+                </div>
+                <div className="flex flex-col items-center">
+                  <img
+                    src="/images/logo-iipsi.png"
+                    alt="Instituto de Investigaciones Psicológicas - IIPSI"
+                    className="h-16 md:h-20 object-contain"
+                  />
+                </div>
+                <div className="flex flex-col items-center">
+                  <img
+                    src="/images/logo-eepsic.png"
+                    alt="EEPSIC Argentina"
+                    className="h-16 md:h-20 object-contain"
+                  />
                 </div>
               </div>
-            </CardHeader>
-        </div>
-      </div>
+            </div>
+          </CardHeader >
+        </div >
+      </div >
     )
   }
 
@@ -481,25 +485,25 @@ export default function BARTTask() {
                   Instrucciones
                 </h3>
                 <ul className="space-y-2 text-sm">
-                  <li style={{textAlign: "justify"}}>• A continuación, se te presentarán <strong>5 globos</strong>, uno a la vez.</li>
-                  <li style={{textAlign: "justify"}}>
-                    • Por <strong>cada inflada</strong> acumularás <strong>5 puntos</strong>. No se te mostrará la cantidad parcial de puntos que acumulaste. 
-                     <strong> En cualquier momento podés dejar de inflar el globo y hacer click en el botón "cobrar puntos"</strong>. 
+                  <li style={{ textAlign: "justify" }}>• A continuación, se te presentarán <strong>5 globos</strong>, uno a la vez.</li>
+                  <li style={{ textAlign: "justify" }}>
+                    • Por <strong>cada inflada</strong> acumularás <strong>5 puntos</strong>. No se te mostrará la cantidad parcial de puntos que acumulaste.
+                    <strong> En cualquier momento podés dejar de inflar el globo y hacer click en el botón "cobrar puntos"</strong>.
                     Hacer click en este botón te llevará al siguiente globo y transferirá tu puntaje parcial acumulado a tu puntaje total.
                   </li>
-                  <li style={{textAlign: "justify"}}>
-                    • Es <strong>tu elección</strong> determinar <strong>cuánto inflar el globo</strong>, pero tené en cuenta 
-                    que <strong>en algún momento el globo explotará</strong>. 
+                  <li style={{ textAlign: "justify" }}>
+                    • Es <strong>tu elección</strong> determinar <strong>cuánto inflar el globo</strong>, pero tené en cuenta
+                    que <strong>en algún momento el globo explotará</strong>.
                   </li>
-                  <li style={{textAlign: "justify"}}>
-                    • El <strong>punto de explosión varía entre los globos</strong>, desde la primera inflada hasta suficientes infladas 
-                    para que el globo llene toda la pantalla de la computadora. 
+                  <li style={{ textAlign: "justify" }}>
+                    • El <strong>punto de explosión varía entre los globos</strong>, desde la primera inflada hasta suficientes infladas
+                    para que el globo llene toda la pantalla de la computadora.
                   </li>
-                  <li style={{textAlign: "justify"}}>
+                  <li style={{ textAlign: "justify" }}>
                     • Si el <strong>globo explota antes de</strong> que hagas click en <strong>"cobrar puntos"</strong>, pasarás al siguiente globo
-                    y todo  <strong>el puntaje parcial se perderá</strong>. Los globos explotados no afectan el puntaje acumulado en tu puntaje total. 
+                    y todo  <strong>el puntaje parcial se perderá</strong>. Los globos explotados no afectan el puntaje acumulado en tu puntaje total.
                   </li>
-                  <li style={{textAlign: "justify"}}><strong>• Al final de la encuesta podrás ver tus resultados.</strong></li>
+                  <li style={{ textAlign: "justify" }}><strong>• Al final de la encuesta podrás ver tus resultados.</strong></li>
                 </ul>
               </div>
 
@@ -596,14 +600,14 @@ export default function BARTTask() {
               <Badge variant="secondary">Globo {currentBalloon} de 5</Badge>
               <Badge variant="outline">Completados: {completedBalloons}</Badge>
             </div>
-            <div style={{textAlign: "center"}} >
+            <div style={{ textAlign: "center" }} >
               <div>
                 <span className="text-gray-600">Total acumulado:</span>
                 <div className="font-semibold text-green-600">{totalPoints} puntos</div>
               </div>
             </div>
           </CardContent>
-        </Card> 
+        </Card>
 
         {/* Área del globo */}
         <Card className="mb-4">
@@ -679,7 +683,7 @@ export default function BARTTask() {
             className="w-full h-12 text-lg bg-transparent"
             size="lg"
           >
-            💰 Cobrar Puntos 
+            💰 Cobrar Puntos
           </Button>
         </div>
 
