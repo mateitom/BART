@@ -485,25 +485,22 @@ export default function BARTTask() {
                   Instrucciones
                 </h3>
                 <ul className="space-y-2 text-sm">
-                  <li style={{ textAlign: "justify" }}>• A continuación, se te presentarán <strong>5 globos</strong>, uno a la vez.</li>
+                  <li style={{ textAlign: "justify" }}>• Vas a ver <strong>5 globos</strong>, uno por vez.</li>
                   <li style={{ textAlign: "justify" }}>
-                    • Por <strong>cada inflada</strong> acumularás <strong>5 puntos</strong>. No se te mostrará la cantidad parcial de puntos que acumulaste.
-                    <strong> En cualquier momento podés dejar de inflar el globo y hacer click en el botón "cobrar puntos"</strong>.
-                    Hacer click en este botón te llevará al siguiente globo y transferirá tu puntaje parcial acumulado a tu puntaje total.
+                    • Cada vez que hagas click en <strong>“Inflar Globo”</strong> ganás <strong>5 puntos</strong>.
                   </li>
                   <li style={{ textAlign: "justify" }}>
-                    • Es <strong>tu elección</strong> determinar <strong>cuánto inflar el globo</strong>, pero tené en cuenta
-                    que <strong>en algún momento el globo explotará</strong>.
+                    • En cualquier momento podés hacer click en <strong>“Cobrar Puntos”:</strong> pasás al siguiente globo y los puntos acumulados se transfieren a tu pozo total (<strong>“Total acumulado”</strong>).
                   </li>
                   <li style={{ textAlign: "justify" }}>
-                    • El <strong>punto de explosión varía entre los globos</strong>, desde la primera inflada hasta suficientes infladas
-                    para que el globo llene toda la pantalla de la computadora.
+                    • <strong>!Ojo!</strong> El globo puede explotar cada vez que lo infles. Si explota antes de cobrar los puntos vas a perder todos los que acumulaste en ese globo.
                   </li>
                   <li style={{ textAlign: "justify" }}>
-                    • Si el <strong>globo explota antes de</strong> que hagas click en <strong>"cobrar puntos"</strong>, pasarás al siguiente globo
-                    y todo  <strong>el puntaje parcial se perderá</strong>. Los globos explotados no afectan el puntaje acumulado en tu puntaje total.
+                    • El punto de <strong>explosión</strong> es aleatorio y distinto en cada globo.
                   </li>
-                  <li style={{ textAlign: "justify" }}><strong>• Al final de la encuesta podrás ver tus resultados.</strong></li>
+                  <li style={{ textAlign: "justify" }}>
+                    • ➡️ 💎 Quedate hasta el final de la encuesta para saber cómo fue <strong>tu desempeño en el juego 🪞😏</strong>.
+                  </li>
                 </ul>
               </div>
 
