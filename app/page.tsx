@@ -294,7 +294,7 @@ export default function BARTTask() {
                       <div className="bg-green-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-green-800 mb-2">Metodología</h4>
                         <p className="mb-2" style={{ textAlign: "justify" }}>
-                          Te pedimos que de manera <strong>voluntaria</strong> respondas una serie de preguntas sobre tu historia personal,
+                          Te pedimos que de manera <strong>voluntaria</strong> respondas una serie de preguntas sobre tu historia personal (incluidas experiencias de victimización),
                           tus experiencias psicológicas y tus conductas habituales en diferentes aspectos de tu vida.
                           Responder la encuesta te llevará entre 20 a 40 minutos. Tu participación no conlleva más riesgos que
                           cierta incomodidad al compartir información de carácter personal.
