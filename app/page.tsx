@@ -261,7 +261,7 @@ export default function BARTTask() {
         <div className="max-w-4xl mx-auto">
           <Card className="mt-8">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-bold text-gray-800">Estudio sobre Experiencias Psicológicas y Conductas <br />EEPSIC 2</CardTitle>
+              <CardTitle className="text-2xl font-bold text-gray-800">Estudio sobre Experiencias Psicológicas y Conductas 2 <br />EEPSIC 2</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Botón desplegable para información */}
@@ -283,7 +283,7 @@ export default function BARTTask() {
                   <div className="mt-4 border rounded-lg p-4 bg-white max-h-96 overflow-y-auto">
                     <div className="space-y-4 text-sm">
                       <div className="bg-blue-50 p-4 rounded-lg">
-                        <p className="mb-2" style={{ textAlign: "justify" }}>
+                        <p className="mb-2">
                           Bienvenido/a. Si sos <strong>mayor de 18 años</strong> y <strong>residís en Argentina</strong>,
                           te invitamos a responder una encuesta poblacional denominada “Estudio sobre Experiencias Psicológicas
                           y Conductas 2” que nuestro grupo de investigación de CONICET y la Universidad Nacional de Córdoba está distribuyendo a través de internet.
@@ -293,7 +293,7 @@ export default function BARTTask() {
                       </div>
                       <div className="bg-green-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-green-800 mb-2">Metodología</h4>
-                        <p className="mb-2" style={{ textAlign: "justify" }}>
+                        <p className="mb-2" >
                           Te pedimos que de manera <strong>voluntaria</strong> respondas una serie de preguntas sobre tu historia personal (incluidas experiencias de victimización),
                           tus experiencias psicológicas y tus conductas habituales en diferentes aspectos de tu vida.
                           Responder la encuesta te llevará entre 20 a 40 minutos. Tu participación no conlleva más riesgos que
@@ -303,7 +303,7 @@ export default function BARTTask() {
                       </div>
                       <div className="bg-purple-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-purple-800 mb-2">Confidencialidad</h4>
-                        <p className="mb-2" style={{ textAlign: "justify" }}>
+                        <p className="mb-2">
                           No te solicitamos ningún dato que permita tu identificación personal como nombre, apellido o DNI.
                           Tus respuestas sólo se emplearán a los fines de este estudio y se analizarán de manera grupal, así que no será
                           posible conocer respuestas individuales.
@@ -315,7 +315,7 @@ export default function BARTTask() {
                       </div>
                       <div className="bg-yellow-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-yellow-800 mb-2">Justificación y utilidad de tu participación</h4>
-                        <p className="mb-2" style={{ textAlign: "justify" }}>
+                        <p className="mb-2" >
                           Con tu participación colaborás a mejorar el conocimiento sobre cómo ciertas experiencias psicológicas influyen en la conducta de las personas y, en consecuencia, mejorar la prevención de la violencia y aumentar el bienestar de las personas.
                           No recibirás remuneración ni beneficio alguno por responder esta encuesta.
                           Al dar tu consentimiento informado (ver más abajo), no renunciás a los derechos que te otorga la Ley 25.326 de protección de datos
@@ -326,7 +326,7 @@ export default function BARTTask() {
                       <div className="bg-orange-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-orange-800 mb-2">Contactos</h4>
                         <div className="space-y-3 text-sm">
-                          <ul className="list-disc list-inside space-y-1 text-sm text-justify">
+                          <ul className="list-disc list-inside space-y-1">
                             <li>
                               Si tenés dudas como participante del estudio, podés contactar al  <a
                                 href="https://iipsi.psicologia.unc.edu.ar/etica-en-investigacion/"
@@ -344,7 +344,7 @@ export default function BARTTask() {
                                 comite.etica.iipsi@psicología.unc.edu.ar.
                               </a>
                             </li>
-                            <li className="text-justify">
+                            <li>
                               Si tenés otras dudas sobre este estudio, podés contactar con la investigadora principal: Lic. Carolina Rinaldi
                               (Instituto de Investigaciones Psicológicas, Facultad de Psicología, UNC; Enfermera Gordillo esquina Enrique Barros s/n,
                               3.er piso, X5000 Córdoba;<a
@@ -380,7 +380,7 @@ export default function BARTTask() {
                             Línea nacional gratuita de urgencias en salud mental (Hospital Bonaparte): 0800 999 0091.
                           </li>
                           <li>
-                            Línea nacional gratuita de violencia familiar, sexual y/o grooming: 137 (marcar opción 1).
+                            Línea nacional gratuita de violencia familiar, sexual y/o grooming (Ministerio de Justicia de la Nación): 137 (marcar opción 1).
                           </li>
                         </ul>
                       </div>
