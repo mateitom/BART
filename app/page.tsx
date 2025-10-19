@@ -261,7 +261,7 @@ export default function BARTTask() {
         <div className="max-w-4xl mx-auto">
           <Card className="mt-8">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-bold text-gray-800">Estudio sobre Experiencias Psicológicas y Conductas 2 <br />EEPSIC 2</CardTitle>
+              <CardTitle className="text-2xl font-bold text-gray-800">Estudio sobre Experiencias Psicológicas y Conductas 2</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Botón desplegable para información */}
