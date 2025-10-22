@@ -269,7 +269,7 @@ export default function BARTTask() {
                 <Button
                   onClick={() => setShowInformation(!showInformation)}
                   variant="outline"
-                  className="w-full flex items-center justify-between p-4 h-auto whitespace-normal"
+                  className="border-blue-300 hover:bg-blue-50 w-full flex items-center justify-between p-4 h-auto whitespace-normal"
                 >
                   <span className="flex items-center gap-2">
                     <Info className="w-5 h-5" />
@@ -283,8 +283,9 @@ export default function BARTTask() {
                   <div className="mt-4 border rounded-lg p-4 bg-white max-h-96 overflow-y-auto">
                     <div className="space-y-4 text-sm">
                       <div className="bg-blue-50 p-4 rounded-lg">
+                        <h4 className="font-semibold text-blue-800 mb-2">Bienvenido/a</h4>
                         <p className="mb-2">
-                          Bienvenido/a. Si sos <strong>mayor de 18 años</strong> y <strong>residís en Argentina</strong>,
+                           Si sos <strong>mayor de 18 años</strong> y <strong>residís en Argentina</strong>,
                           te invitamos a responder una encuesta poblacional denominada “Estudio sobre Experiencias Psicológicas
                           y Conductas 2” que nuestro grupo de investigación de CONICET y la Universidad Nacional de Córdoba está distribuyendo a través de internet.
                           Nuestro objetivo es identificar qué estados mentales en la población argentina se asocian con el riesgo de violencia. Con este conocimiento,
@@ -294,9 +295,8 @@ export default function BARTTask() {
                       <div className="bg-green-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-green-800 mb-2">Metodología</h4>
                         <p className="mb-2" >
-                          Te pedimos que de manera <strong>voluntaria</strong> respondas una serie de preguntas sobre tu historia personal (incluidas experiencias de victimización),
-                          tus experiencias psicológicas y tus conductas habituales en diferentes aspectos de tu vida.
-                          Responder la encuesta te llevará entre 20 a 40 minutos. Tu participación no conlleva más riesgos que
+                          Te pedimos que, de manera <strong>voluntaria</strong>, respondas una serie de preguntas sobre tus experiencias psicológicas, tus conductas habituales en diferentes aspectos de tu vida y tu historia personal, incluidas posibles experiencias de victimización.
+                          Responder la encuesta te llevará entre 20 y 40 minutos. Tu participación no conlleva más riesgos que
                           cierta incomodidad al compartir información de carácter personal.
                           Te dejaremos contactos de servicios de salud mental en caso que desees consultar con un profesional.
                         </p>
@@ -323,7 +323,100 @@ export default function BARTTask() {
                           permita identificar a los participantes.
                         </p>
                       </div>
-                      <div className="bg-orange-50 p-4 rounded-lg">
+                      <div className="bg-orange-50 p-3 sm:p-4 rounded-lg">
+                        <h4 className="font-semibold text-orange-800 mb-3">Contactos</h4>
+                        <div className="space-y-4 text-sm">
+                          {/* Dudas como participante */}
+                          <div>
+                            <p className="font-medium  mb-2">Si tenés dudas como participante del estudio podés contactar a:</p>
+                            <ul className="ml-4 sm:ml-6 space-y-1">
+                              <li className="list-disc">
+                                <a
+                                  href="https://iipsi.psicologia.unc.edu.ar/etica-en-investigacion/"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 hover:text-blue-800 underline break-words"
+                                >
+                                  Comité de Ética del Instituto de Investigaciones Psicológicas (CONICET-UNC)
+                                </a>
+                              </li>
+                              <li className="list-disc">
+                                Email:{" "}
+                                <a
+                                  href="mailto:comite.etica.iipsi@psicologia.unc.edu.ar"
+                                  className="text-blue-600 hover:text-blue-800 underline break-all"
+                                >
+                                  comite.etica.iipsi@psicologia.unc.edu.ar
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+
+                          {/* Otras dudas sobre el estudio */}
+                          <div>
+                            <p className="font-medium mb-2">Si tenés otras dudas sobre este estudio podés contactar a:</p>
+                            <ul className="ml-4 sm:ml-6 space-y-3">
+                              {/* Investigadora principal */}
+                              <li className="list-disc">
+                                <div>
+                                  <p className="font-medium">Investigadora Principal:</p>
+                                  <p>Lic. Carolina Rinaldi</p>
+                                  <p className="text-xs text-gray-600 break-words">
+                                    Instituto de Investigaciones Psicológicas, Facultad de Psicología, UNC
+                                    <br className="hidden sm:inline" />
+                                    <span className="sm:hidden"> </span>
+                                    Enfermera Gordillo esquina Enrique Barros s/n, 3er. piso, X5000 Córdoba
+                                  </p>
+                                  <p className="break-all">
+                                    Email:{" "}
+                                    <a
+                                      href="mailto:carolina.rinaldi@mi.unc.edu.ar"
+                                      className="text-blue-600 hover:text-blue-800 underline"
+                                    >
+                                      carolina.rinaldi@mi.unc.edu.ar
+                                    </a>
+                                  </p>
+                                </div>
+                              </li>
+
+                              {/* Investigadora responsable */}
+                              <li className="list-disc">
+                                <div>
+                                  <p className="font-medium">Investigadora Responsable:</p>
+                                  <p>Dra. Karin Arbach</p>
+                                  <p className="break-all">
+                                    Email:{" "}
+                                    <a
+                                      href="mailto:k_arbach@unc.edu.ar"
+                                      className="text-blue-600 hover:text-blue-800 underline"
+                                    >
+                                      k_arbach@unc.edu.ar
+                                    </a>
+                                  </p>
+                                </div>
+                              </li>
+
+                              {/* Soporte técnico */}
+                              <li className="list-disc">
+                                <div>
+                                  <p className="font-medium">Consultas Técnicas sobre la plataforma o su funcionamiento:</p>
+                                  <p>Mateo Marañón</p>
+                                  <p className="break-all">
+                                    Email:{" "}
+                                    <a
+                                      href="mailto:mateo.maranon@mi.unc.edu.ar"
+                                      className="text-blue-600 hover:text-blue-800 underline"
+                                    >
+                                      mateo.maranon@mi.unc.edu.ar
+                                    </a>
+                                  </p>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      {/* <div className="bg-orange-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-orange-800 mb-2">Contactos</h4>
                         <div className="space-y-3 text-sm">
                           <ul className="list-disc list-inside space-y-1">
@@ -335,7 +428,6 @@ export default function BARTTask() {
                                 className="text-blue-600 hover:text-blue-800 underline break-all"
                               >
                                 Comité de Ética del Instituto de Investigaciones Psicológicas (CONICET-UNC)
-                                {/* <ExternalLink className="w-3 h-3" /> */}
                               </a> que aprobó esta encuesta,
                               <a
                                 href="mailto:k_arbach@unc.edu.ar"
@@ -345,8 +437,8 @@ export default function BARTTask() {
                               </a>
                             </li>
                             <li>
-                              Si tenés otras dudas sobre este estudio, podés contactar con la investigadora principal: Lic. Carolina Rinaldi
-                              (Instituto de Investigaciones Psicológicas, Facultad de Psicología, UNC; Enfermera Gordillo esquina Enrique Barros s/n,
+                              Si tenés otras dudas sobre este estudio, podés contactar a la investigadora principal: Lic. Carolina Rinaldi
+                              (Instituto de  Investigaciones Psicológicas, Facultad de Psicología, UNC; Enfermera Gordillo esquina Enrique Barros s/n,
                               3.er piso, X5000 Córdoba;<a
                                 href="mailto:carolina.rinaldi@mi.unc.edu.ar"
                                 className="text-blue-600 hover:text-blue-800 underline ml-1 break-all"
@@ -372,7 +464,7 @@ export default function BARTTask() {
 
 
                         </div>
-                      </div>
+                      </div> */}
                       <div className="bg-red-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-red-800 mb-2">Si requerís atención en salud mental, podés contactar a:</h4>
                         <ul className="list-disc list-inside space-y-1 text-sm">
@@ -484,24 +576,30 @@ export default function BARTTask() {
                   <Info className="inline w-5 h-5 mr-2" />
                   Instrucciones
                 </h3>
-                <ul className="space-y-2 text-sm">
-                  <li style={{ textAlign: "justify" }}>• Vas a ver <strong>5 globos</strong>, uno por vez.</li>
-                  <li style={{ textAlign: "justify" }}>
-                    • Cada vez que hagas click en <strong>“Inflar Globo”</strong> ganás <strong>5 puntos</strong>.
+                <p className="mb-2">Verás <strong>5 globos</strong>, uno a la vez. Tu objetivo es acumular la mayor cantidad de puntos posible.</p>
+                <p className="mb-2">🔎<strong>¿Cómo funciona?</strong></p>
+                <ul className="list-disc list-inside space-y-2 text-sm mb-2">
+                  <li className="text-justify">Cada vez que hagas clic en <strong>“Inflar Globo”</strong>, ganarás <strong>5 puntos</strong>.</li>
+                  <li className="text-justify">
+                    Podés inflar el globo tantas veces como quieras para acumular más puntos.
                   </li>
-                  <li style={{ textAlign: "justify" }}>
-                    • En cualquier momento podés hacer click en <strong>“Cobrar Puntos”:</strong> pasás al siguiente globo y los puntos acumulados se transfieren a tu pozo total (<strong>“Total acumulado”</strong>).
-                  </li>
-                  <li style={{ textAlign: "justify" }}>
-                    • <strong>!Ojo!</strong> El globo puede explotar cada vez que lo infles. Si explota antes de cobrar los puntos vas a perder todos los que acumulaste en ese globo.
-                  </li>
-                  <li style={{ textAlign: "justify" }}>
-                    • El punto de <strong>explosión</strong> es aleatorio y distinto en cada globo.
-                  </li>
-                  <li style={{ textAlign: "justify" }}>
-                    • ➡️ 💎 Quedate hasta el final de la encuesta para saber cómo fue <strong>tu desempeño en el juego 🪞😏</strong>.
+                  <li className="text-justify">
+                    Cuando decidas guardar tus puntos, hacé clic en <strong>“Cobrar Puntos”</strong>. Esto sumará los puntos de ese globo a tu <strong>“Total acumulado”</strong> y pasarás al siguiente globo.
                   </li>
                 </ul>
+                <p className="mb-2">⚠️ <strong>¡Cuidado!</strong></p>
+                <ul className="list-disc list-inside space-y-2 text-sm mb-5">
+                  <li className="text-justify">
+                    El globo puede <strong>explotar</strong> en cualquier momento mientras lo inflás.
+                  </li>
+                  <li className="text-justify">
+                    Si el globo explota antes de que cobres los puntos, perderás todos los puntos acumulados de ese globo. 
+                  </li>
+                  <li className="text-justify">
+                    El punto de explosión es aleatorio y diferente para cada globo.
+                  </li>
+                </ul>
+                <p className="mb-2">➡️ 💎 Completá toda la encuesta para conocer <strong>tu desempeño final en el juego 🪞😏</strong>.</p>
               </div>
 
               <div className="flex justify-center">
@@ -557,8 +655,8 @@ export default function BARTTask() {
 
               <div className="flex flex-col gap-3">
                 <Button onClick={handleReturnToSurvey} className="flex items-center gap-2 w-full">
-                  <span>🔙</span>
-                  Volver a la Encuesta
+                  <span>➡️</span>
+                  Continuar a la Encuesta
                 </Button>
               </div>
 
@@ -688,7 +786,6 @@ export default function BARTTask() {
         {isExploding && (
           <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded-lg text-center">
             <div className="text-red-800 font-semibold">¡El globo explotó!</div>
-            <div className="text-red-600 text-sm">Perdiste {currentPoints} puntos</div>
           </div>
         )}
 
