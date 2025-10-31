@@ -317,7 +317,7 @@ export default function BARTTask() {
                         <h4 className="font-semibold text-yellow-800 mb-2">Justificación y utilidad de tu participación</h4>
                         <p className="mb-2" >
                           Con tu participación colaborás a mejorar el conocimiento sobre cómo ciertas experiencias psicológicas influyen en la conducta de las personas y, en consecuencia, mejorar la prevención de la violencia y aumentar el bienestar de las personas.
-                          No recibirás remuneración ni beneficio alguno por responder esta encuesta.
+                          No recibirás beneficio alguno por responder esta encuesta. A modo de agradecimiento por tu participación en el estudio, sortearemos premios entre quienes completen la encuesta.
                           Al dar tu consentimiento informado (ver más abajo), no renunciás a los derechos que te otorga la Ley 25.326 de protección de datos
                           personales. Los resultados del estudio podrán ser difundidos en eventos o publicaciones científicas sin incluir información que
                           permita identificar a los participantes.
