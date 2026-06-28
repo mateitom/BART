@@ -43,6 +43,7 @@ export default function BARTTask() {
   const [consentAccepted, setConsentAccepted] = useState<boolean | null>(null)
   const [showInformation, setShowInformation] = useState(false)
   const [countdown, setCountdown] = React.useState(3)
+  const [yaRedirigido, setYaRedirigido] = React.useState(false)
 
   const submuestra: Submuestra | null = (() => {
     if (typeof window === "undefined") return null
@@ -233,6 +234,9 @@ export default function BARTTask() {
 
   React.useEffect(() => {
     if (countdown === 0 && gameState === "results") {
+      if (yaRedirigido) return
+      setYaRedirigido(true)
+
       // Crear URL con resultados como parámetros
       const results = calculateResults()
       const urlParams = new URLSearchParams()
@@ -252,9 +256,12 @@ export default function BARTTask() {
       console.log("Redirigiendo con resultados:", finalUrl)
       window.location.href = finalUrl
     }
-  }, [gameState, countdown])
+  }, [gameState, countdown, yaRedirigido])
 
   const handleReturnToSurvey = () => {
+    if (yaRedirigido) return
+    setYaRedirigido(true)
+
     // Crear URL con resultados como parámetros
     const results = calculateResults()
     const urlParams = new URLSearchParams()
@@ -674,9 +681,13 @@ export default function BARTTask() {
               </div>
 
               <div className="flex flex-col gap-3">
-                <Button onClick={handleReturnToSurvey} className="flex items-center gap-2 w-full">
+                <Button
+                  onClick={handleReturnToSurvey}
+                  disabled={countdown > 0 || yaRedirigido}
+                  className="flex items-center gap-2 w-full"
+                >
                   <span>➡️</span>
-                  Continuar a la Encuesta
+                  {countdown > 0 ? `Continuar a la Encuesta (${countdown})` : "Continuar a la Encuesta"}
                 </Button>
               </div>
 
