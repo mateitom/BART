@@ -18,6 +18,18 @@ interface BalloonData {
 
 type GameState = "consent" | "instructions" | "playing" | "results"
 
+const SURVEY_URL_GENERAL = "https://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=663342&lang=es"
+const SURVEY_URL_CLINICA = "https://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=862472&lang=es"
+
+const VALID_SUBMUESTRA = [
+  "consultorio_interno",
+  "consultorio_externo",
+  "casa_dia",
+  "guardia",
+] as const
+
+type Submuestra = (typeof VALID_SUBMUESTRA)[number]
+
 export default function BARTTask() {
   const [gameState, setGameState] = useState<GameState>("consent")
   const [currentBalloon, setCurrentBalloon] = useState(1)
@@ -31,9 +43,21 @@ export default function BARTTask() {
   const [consentAccepted, setConsentAccepted] = useState<boolean | null>(null)
   const [showInformation, setShowInformation] = useState(false)
   const [countdown, setCountdown] = React.useState(3)
-  const [baseRedirectUrl] = React.useState(
-    "https://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=892672&lang=es",
-  ) // CAMBIAR ESTE LINK
+
+  const submuestra: Submuestra | null = (() => {
+    if (typeof window === "undefined") return null
+    const raw = new URLSearchParams(window.location.search).get("submuestra")
+    return VALID_SUBMUESTRA.includes(raw as Submuestra) ? (raw as Submuestra) : null
+  })()
+
+  const buildRedirectUrl = (extraParams: URLSearchParams): string => {
+    const baseUrl = submuestra !== null ? SURVEY_URL_CLINICA : SURVEY_URL_GENERAL
+    if (submuestra !== null) {
+      extraParams.append("submuestra", submuestra)
+    }
+    const separator = baseUrl.includes("?") ? "&" : "?"
+    return `${baseUrl}${separator}${extraParams.toString()}`
+  }
 
   const inflateBalloon = () => {
     if (isExploding || showSuccess) return
@@ -134,13 +158,11 @@ export default function BARTTask() {
       setGameState("instructions")
     } else {
       // Redirección inmediata si no acepta
-      const baseRedirectUrl = "https://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=892672&lang=es"
       const urlParams = new URLSearchParams()
       urlParams.append("consentimiento_aceptado", "no")
       urlParams.append("timestamp", new Date().toISOString())
 
-      const separator = baseRedirectUrl.includes("?") ? "&" : "?"
-      const finalUrl = `${baseRedirectUrl}${separator}${urlParams.toString()}`
+      const finalUrl = buildRedirectUrl(urlParams)
 
       console.log("Redirigiendo sin consentimiento:", finalUrl)
       window.location.href = finalUrl
@@ -225,8 +247,7 @@ export default function BARTTask() {
       urlParams.append("total_puntos", results.total_puntos.toString())
 
       // Construir URL final
-      const separator = baseRedirectUrl.includes("?") ? "&" : "?"
-      const finalUrl = `${baseRedirectUrl}${separator}${urlParams.toString()}`
+      const finalUrl = buildRedirectUrl(urlParams)
 
       console.log("Redirigiendo con resultados:", finalUrl)
       window.location.href = finalUrl
@@ -248,8 +269,7 @@ export default function BARTTask() {
     urlParams.append("total_puntos", results.total_puntos.toString())
 
     // Construir URL final
-    const separator = baseRedirectUrl.includes("?") ? "&" : "?"
-    const finalUrl = `${baseRedirectUrl}${separator}${urlParams.toString()}`
+    const finalUrl = buildRedirectUrl(urlParams)
 
     console.log("Redirigiendo con resultados:", finalUrl)
     window.location.href = finalUrl
