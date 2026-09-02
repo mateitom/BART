@@ -367,11 +367,23 @@ export default function BARTTask() {
                       </div>
                       <div className="bg-yellow-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-yellow-800 mb-2">Justificación y utilidad de tu participación</h4>
-                          <p className="mb-2">{textos.justificacion}</p>
+                          {submuestra !== null ? (
+                            <p className="mb-2">[PLACEHOLDER — reemplazar con texto para población clínica]</p>
+                          ) : (
+                            <p className="mb-2">{textos.justificacion}</p>
+                          )}
                       </div>
                       <div className="bg-orange-50 p-3 sm:p-4 rounded-lg">
                         <h4 className="font-semibold text-orange-800 mb-3">Contactos</h4>
-                        <div className="space-y-4 text-sm">
+                        {submuestra !== null ? (
+                          <div className="space-y-4 text-sm">
+                            <p>[PLACEHOLDER — reemplazar con texto para población clínica]</p>
+                            <ul>
+                              <li>[PLACEHOLDER — reemplazar con texto para población clínica]</li>
+                            </ul>
+                          </div>
+                        ) : (
+                          <div className="space-y-4 text-sm">
                           {/* Dudas como participante */}
                           <div>
                             <p className="font-medium  mb-2">Si tenés dudas como participante del estudio podés contactar a:</p>
@@ -460,7 +472,8 @@ export default function BARTTask() {
                               </li>
                             </ul>
                           </div>
-                        </div>
+                          </div>
+                        )}
                       </div>
                       {/* <div className="bg-orange-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-orange-800 mb-2">Contactos</h4>
@@ -512,15 +525,26 @@ export default function BARTTask() {
                         </div>
                       </div> */}
                       <div className="bg-red-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-red-800 mb-2">Si requerís atención en salud mental, podés contactar a:</h4>
-                        <ul className="list-disc list-inside space-y-1 text-sm">
-                          <li>
-                            Línea nacional gratuita de urgencias en salud mental (Hospital Bonaparte): 0800 999 0091.
-                          </li>
-                          <li>
-                            Línea nacional gratuita de violencia familiar, sexual y/o grooming (Ministerio de Justicia de la Nación): 137 (marcar opción 1).
-                          </li>
-                        </ul>
+                        {submuestra !== null ? (
+                          <>
+                            <p>[PLACEHOLDER — reemplazar con texto para población clínica]</p>
+                            <ul>
+                              <li>[PLACEHOLDER — reemplazar con texto para población clínica]</li>
+                            </ul>
+                          </>
+                        ) : (
+                          <>
+                            <h4 className="font-semibold text-red-800 mb-2">Si requerís atención en salud mental, podés contactar a:</h4>
+                            <ul className="list-disc list-inside space-y-1 text-sm">
+                              <li>
+                                Línea nacional gratuita de urgencias en salud mental (Hospital Bonaparte): 0800 999 0091.
+                              </li>
+                              <li>
+                                Línea nacional gratuita de violencia familiar, sexual y/o grooming (Ministerio de Justicia de la Nación): 137 (marcar opción 1).
+                              </li>
+                            </ul>
+                          </>
+                        )}
                       </div>
 
                     </div>
@@ -646,7 +670,7 @@ export default function BARTTask() {
                   </li>
                 </ul>
                       {submuestra === null && (
-                        <p className="mb-2">➡️ 💎 Completá toda la encuesta para conocer <strong>tu desempeño final en el juego 🪞😏</strong>.</p>
+                        <p className="mb-2">➡️ 💎 Completá toda la encuesta para conocer <strong>tu desempeño final en el juego ����😏</strong>.</p>
                       )}
               </div>
 
