@@ -30,6 +30,31 @@ const VALID_SUBMUESTRA = [
 
 type Submuestra = (typeof VALID_SUBMUESTRA)[number]
 
+// =============================================
+// TEXTOS DE LA HOJA DE INFORMACIÓN
+// Editá aquí los textos sin tocar el JSX
+// =============================================
+
+const TEXTOS_GENERAL = {
+  bienvenida:
+    "te invitamos a responder una encuesta poblacional denominada “Estudio sobre Experiencias Psicológicas y Conductas 2” que nuestro grupo de investigación de CONICET y la Universidad Nacional de Córdoba está distribuyendo a través de internet. Nuestro objetivo es identificar qué estados mentales en la población argentina se asocian con el riesgo de violencia. Con este conocimiento, podremos diseñar recomendaciones para disminuir este riesgo.",
+  metodologia:
+    "Responder la encuesta te llevará entre 20 y 40 minutos. Tu participación no conlleva más riesgos que cierta incomodidad al compartir información de carácter personal. Te dejaremos contactos de servicios de salud mental en caso que desees consultar con un profesional.",
+  confidencialidad:
+    "No te solicitamos ningún dato que permita tu identificación personal como nombre, apellido o DNI. Tus respuestas sólo se emplearán a los fines de este estudio y se analizarán de manera grupal, así que no será posible conocer respuestas individuales. Podés abandonar la encuesta en cualquier momento. Las respuestas que ya hayas brindado hasta ese momento quedarán guardadas, no pueden retirarse pues no tenemos forma de identificar la identidad de quien responde. Los datos se archivarán de manera segura en una plataforma virtual de la Universidad Nacional de Córdoba con acceso cifrado al que sólo tiene acceso el equipo de investigación. Si querés recibir información sobre tus resultados, al final de la encuesta tendrás la opción de solicitarlo. Este dato será guardado de manera separada, en un documento cifrado, para garantizar tu privacidad.",
+  justificacion:
+    "Con tu participación colaborás a mejorar el conocimiento sobre cómo ciertas experiencias psicológicas influyen en la conducta de las personas y, en consecuencia, mejorar la prevención de la violencia y aumentar el bienestar de las personas. No recibirás beneficio alguno por responder esta encuesta. A modo de agradecimiento por tu participación en el estudio, sortearemos premios entre quienes completen la encuesta. Al dar tu consentimiento informado (ver más abajo), no renunciás a los derechos que te otorga la Ley 25.326 de protección de datos personales. Los resultados del estudio podrán ser difundidos en eventos o publicaciones científicas sin incluir información que permita identificar a los participantes.",
+  instruccionFinal: "➡️ 💎 Completá toda la encuesta para conocer tu desempeño final en el juego 🪞😏",
+}
+
+const TEXTOS_CLINICA = {
+  bienvenida: "[PLACEHOLDER — reemplazar con texto para población clínica]",
+  metodologia: "[PLACEHOLDER — reemplazar con texto para población clínica]",
+  confidencialidad: "[PLACEHOLDER — reemplazar con texto para población clínica]",
+  justificacion: "[PLACEHOLDER — reemplazar con texto para población clínica]",
+  instruccionFinal: "",
+}
+
 export default function BARTTask() {
   const [gameState, setGameState] = useState<GameState>("consent")
   const [currentBalloon, setCurrentBalloon] = useState(1)
@@ -50,6 +75,7 @@ export default function BARTTask() {
     const raw = new URLSearchParams(window.location.search).get("submuestra")
     return VALID_SUBMUESTRA.includes(raw as Submuestra) ? (raw as Submuestra) : null
   })()
+  const textos = submuestra !== null ? TEXTOS_CLINICA : TEXTOS_GENERAL
 
   const buildRedirectUrl = (extraParams: URLSearchParams): string => {
     const baseUrl = submuestra !== null ? SURVEY_URL_CLINICA : SURVEY_URL_GENERAL
@@ -311,44 +337,37 @@ export default function BARTTask() {
                     <div className="space-y-4 text-sm">
                       <div className="bg-blue-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-blue-800 mb-2">Bienvenido/a</h4>
-                        <p className="mb-2">
-                           Si sos <strong>mayor de 18 años</strong> y <strong>residís en Argentina</strong>,
-                          te invitamos a responder una encuesta poblacional denominada “Estudio sobre Experiencias Psicológicas
-                          y Conductas 2” que nuestro grupo de investigación de CONICET y la Universidad Nacional de Córdoba está distribuyendo a través de internet.
-                          Nuestro objetivo es identificar qué estados mentales en la población argentina se asocian con el riesgo de violencia. Con este conocimiento,
-                          podremos diseñar recomendaciones para disminuir este riesgo.
-                        </p>
+                          {submuestra !== null ? (
+                            <p className="mb-2">[PLACEHOLDER — reemplazar con texto para población clínica]</p>
+                          ) : (
+                            <p className="mb-2">
+                              Si sos <strong>mayor de 18 años</strong> y <strong>residís en Argentina</strong>, {TEXTOS_GENERAL.bienvenida}
+                            </p>
+                          )}
                       </div>
                       <div className="bg-green-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-green-800 mb-2">Metodología</h4>
-                        <p className="mb-2" >
-                          Te pedimos que, de manera <strong>voluntaria</strong>, respondas una serie de preguntas sobre tus experiencias psicológicas, tus conductas habituales en diferentes aspectos de tu vida y tu historia personal, incluidas posibles experiencias de victimización.
-                          Responder la encuesta te llevará entre 20 y 40 minutos. Tu participación no conlleva más riesgos que
-                          cierta incomodidad al compartir información de carácter personal.
-                          Te dejaremos contactos de servicios de salud mental en caso que desees consultar con un profesional.
-                        </p>
+                          {submuestra !== null ? (
+                            <p className="mb-2">[PLACEHOLDER — reemplazar con texto para población clínica]</p>
+                          ) : (
+                            <p className="mb-2">
+                              Te pedimos que, de manera <strong>voluntaria</strong>, respondas una serie de preguntas sobre tus experiencias psicológicas, tus conductas habituales en diferentes aspectos de tu vida y tu historia personal, incluidas posibles experiencias de victimización. {textos.metodologia}
+                            </p>
+                          )}
                       </div>
                       <div className="bg-purple-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-purple-800 mb-2">Confidencialidad</h4>
-                        <p className="mb-2">
-                          No te solicitamos ningún dato que permita tu identificación personal como nombre, apellido o DNI.
-                          Tus respuestas sólo se emplearán a los fines de este estudio y se analizarán de manera grupal, así que no será
-                          posible conocer respuestas individuales.
-                          Es decir que <strong>tus respuestas son</strong> totalmente <strong>confidenciales</strong> y <strong>anónimas</strong>.
-                          Podés abandonar la encuesta en cualquier momento. Las respuestas que ya hayas brindado hasta ese momento quedarán guardadas, no pueden retirarse pues no tenemos forma de identificar la identidad de quien responde.
-                          Los datos se archivarán de manera segura en una plataforma virtual de la Universidad Nacional de Córdoba con acceso cifrado al que sólo tiene acceso el equipo de investigación.
-                          Si querés recibir información sobre tus resultados, al final de la encuesta tendrás la opción de solicitarlo. Este dato será guardado de manera separada, en un documento cifrado, para garantizar tu privacidad.
-                        </p>
+                          {submuestra !== null ? (
+                            <p className="mb-2">[PLACEHOLDER — reemplazar con texto para población clínica]</p>
+                          ) : (
+                            <p className="mb-2">
+                              {textos.confidencialidad} Es decir que <strong>tus respuestas son</strong> totalmente <strong>confidenciales</strong> y <strong>anónimas</strong>.
+                            </p>
+                          )}
                       </div>
                       <div className="bg-yellow-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-yellow-800 mb-2">Justificación y utilidad de tu participación</h4>
-                        <p className="mb-2" >
-                          Con tu participación colaborás a mejorar el conocimiento sobre cómo ciertas experiencias psicológicas influyen en la conducta de las personas y, en consecuencia, mejorar la prevención de la violencia y aumentar el bienestar de las personas.
-                          No recibirás beneficio alguno por responder esta encuesta. A modo de agradecimiento por tu participación en el estudio, sortearemos premios entre quienes completen la encuesta.
-                          Al dar tu consentimiento informado (ver más abajo), no renunciás a los derechos que te otorga la Ley 25.326 de protección de datos
-                          personales. Los resultados del estudio podrán ser difundidos en eventos o publicaciones científicas sin incluir información que
-                          permita identificar a los participantes.
-                        </p>
+                          <p className="mb-2">{textos.justificacion}</p>
                       </div>
                       <div className="bg-orange-50 p-3 sm:p-4 rounded-lg">
                         <h4 className="font-semibold text-orange-800 mb-3">Contactos</h4>
@@ -626,7 +645,9 @@ export default function BARTTask() {
                     El punto de explosión es aleatorio y diferente para cada globo.
                   </li>
                 </ul>
-                <p className="mb-2">➡️ 💎 Completá toda la encuesta para conocer <strong>tu desempeño final en el juego 🪞😏</strong>.</p>
+                      {submuestra === null && (
+                        <p className="mb-2">➡️ 💎 Completá toda la encuesta para conocer <strong>tu desempeño final en el juego 🪞😏</strong>.</p>
+                      )}
               </div>
 
               <div className="flex justify-center">
