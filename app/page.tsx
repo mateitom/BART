@@ -18,6 +18,43 @@ interface BalloonData {
 
 type GameState = "consent" | "instructions" | "playing" | "results"
 
+const SURVEY_URL_GENERAL = "https://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=663342&lang=es"
+const SURVEY_URL_CLINICA = "https://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=862472&lang=es"
+
+const VALID_SUBMUESTRA = [
+  "consultorio_interno",
+  "consultorio_externo",
+  "casa_dia",
+  "guardia",
+] as const
+
+type Submuestra = (typeof VALID_SUBMUESTRA)[number]
+
+// =============================================
+// TEXTOS DE LA HOJA DE INFORMACIÓN
+// Editá aquí los textos sin tocar el JSX
+// =============================================
+
+const TEXTOS_GENERAL = {
+  bienvenida:
+    "te invitamos a responder una encuesta poblacional denominada “Estudio sobre Experiencias Psicológicas y Conductas 2” que nuestro grupo de investigación de CONICET y la Universidad Nacional de Córdoba está distribuyendo a través de internet. Nuestro objetivo es identificar qué estados mentales en la población argentina se asocian con el riesgo de violencia. Con este conocimiento, podremos diseñar recomendaciones para disminuir este riesgo.",
+  metodologia:
+    "Responder la encuesta te llevará entre 20 y 40 minutos. Tu participación no conlleva más riesgos que cierta incomodidad al compartir información de carácter personal. Te dejaremos contactos de servicios de salud mental en caso que desees consultar con un profesional.",
+  confidencialidad:
+    "No te solicitamos ningún dato que permita tu identificación personal como nombre, apellido o DNI. Tus respuestas sólo se emplearán a los fines de este estudio y se analizarán de manera grupal, así que no será posible conocer respuestas individuales. Podés abandonar la encuesta en cualquier momento. Las respuestas que ya hayas brindado hasta ese momento quedarán guardadas, no pueden retirarse pues no tenemos forma de identificar la identidad de quien responde. Los datos se archivarán de manera segura en una plataforma virtual de la Universidad Nacional de Córdoba con acceso cifrado al que sólo tiene acceso el equipo de investigación. Si querés recibir información sobre tus resultados, al final de la encuesta tendrás la opción de solicitarlo. Este dato será guardado de manera separada, en un documento cifrado, para garantizar tu privacidad.",
+  justificacion:
+    "Con tu participación colaborás a mejorar el conocimiento sobre cómo ciertas experiencias psicológicas influyen en la conducta de las personas y, en consecuencia, mejorar la prevención de la violencia y aumentar el bienestar de las personas. No recibirás beneficio alguno por responder esta encuesta. A modo de agradecimiento por tu participación en el estudio, sortearemos premios entre quienes completen la encuesta. Al dar tu consentimiento informado (ver más abajo), no renunciás a los derechos que te otorga la Ley 25.326 de protección de datos personales. Los resultados del estudio podrán ser difundidos en eventos o publicaciones científicas sin incluir información que permita identificar a los participantes.",
+  instruccionFinal: "➡️ 💎 Completá toda la encuesta para conocer tu desempeño final en el juego 📊😏",
+}
+
+const TEXTOS_CLINICA = {
+  bienvenida: "[PLACEHOLDER — reemplazar con texto para población clínica]",
+  metodologia: "[PLACEHOLDER — reemplazar con texto para población clínica]",
+  confidencialidad: "[PLACEHOLDER — reemplazar con texto para población clínica]",
+  justificacion: "[PLACEHOLDER — reemplazar con texto para población clínica]",
+  instruccionFinal: "",
+}
+
 export default function BARTTask() {
   const [gameState, setGameState] = useState<GameState>("consent")
   const [currentBalloon, setCurrentBalloon] = useState(1)
@@ -31,9 +68,23 @@ export default function BARTTask() {
   const [consentAccepted, setConsentAccepted] = useState<boolean | null>(null)
   const [showInformation, setShowInformation] = useState(false)
   const [countdown, setCountdown] = React.useState(3)
-  const [baseRedirectUrl] = React.useState(
-    "https://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=892672&lang=es",
-  ) // CAMBIAR ESTE LINK
+  const [yaRedirigido, setYaRedirigido] = React.useState(false)
+
+  const submuestra: Submuestra | null = (() => {
+    if (typeof window === "undefined") return null
+    const raw = new URLSearchParams(window.location.search).get("submuestra")
+    return VALID_SUBMUESTRA.includes(raw as Submuestra) ? (raw as Submuestra) : null
+  })()
+  const textos = submuestra !== null ? TEXTOS_CLINICA : TEXTOS_GENERAL
+
+  const buildRedirectUrl = (extraParams: URLSearchParams): string => {
+    const baseUrl = submuestra !== null ? SURVEY_URL_CLINICA : SURVEY_URL_GENERAL
+    if (submuestra !== null) {
+      extraParams.append("submuestra", submuestra)
+    }
+    const separator = baseUrl.includes("?") ? "&" : "?"
+    return `${baseUrl}${separator}${extraParams.toString()}`
+  }
 
   const inflateBalloon = () => {
     if (isExploding || showSuccess) return
@@ -134,13 +185,11 @@ export default function BARTTask() {
       setGameState("instructions")
     } else {
       // Redirección inmediata si no acepta
-      const baseRedirectUrl = "https://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=892672&lang=es"
       const urlParams = new URLSearchParams()
       urlParams.append("consentimiento_aceptado", "no")
       urlParams.append("timestamp", new Date().toISOString())
 
-      const separator = baseRedirectUrl.includes("?") ? "&" : "?"
-      const finalUrl = `${baseRedirectUrl}${separator}${urlParams.toString()}`
+      const finalUrl = buildRedirectUrl(urlParams)
 
       console.log("Redirigiendo sin consentimiento:", finalUrl)
       window.location.href = finalUrl
@@ -211,6 +260,9 @@ export default function BARTTask() {
 
   React.useEffect(() => {
     if (countdown === 0 && gameState === "results") {
+      if (yaRedirigido) return
+      setYaRedirigido(true)
+
       // Crear URL con resultados como parámetros
       const results = calculateResults()
       const urlParams = new URLSearchParams()
@@ -225,15 +277,17 @@ export default function BARTTask() {
       urlParams.append("total_puntos", results.total_puntos.toString())
 
       // Construir URL final
-      const separator = baseRedirectUrl.includes("?") ? "&" : "?"
-      const finalUrl = `${baseRedirectUrl}${separator}${urlParams.toString()}`
+      const finalUrl = buildRedirectUrl(urlParams)
 
       console.log("Redirigiendo con resultados:", finalUrl)
       window.location.href = finalUrl
     }
-  }, [gameState, countdown])
+  }, [gameState, countdown, yaRedirigido])
 
   const handleReturnToSurvey = () => {
+    if (yaRedirigido) return
+    setYaRedirigido(true)
+
     // Crear URL con resultados como parámetros
     const results = calculateResults()
     const urlParams = new URLSearchParams()
@@ -248,8 +302,7 @@ export default function BARTTask() {
     urlParams.append("total_puntos", results.total_puntos.toString())
 
     // Construir URL final
-    const separator = baseRedirectUrl.includes("?") ? "&" : "?"
-    const finalUrl = `${baseRedirectUrl}${separator}${urlParams.toString()}`
+    const finalUrl = buildRedirectUrl(urlParams)
 
     console.log("Redirigiendo con resultados:", finalUrl)
     window.location.href = finalUrl
@@ -282,50 +335,125 @@ export default function BARTTask() {
                 {showInformation && (
                   <div className="mt-4 border rounded-lg p-4 bg-white max-h-96 overflow-y-auto">
                     <div className="space-y-4 text-sm">
+                      <div className="bg-red-50 p-4 rounded-lg">
+                        {submuestra !== null ? (
+                          <>
+                            <h4 className="font-semibold text-red-800 mb-2">Información sobre salud mental</h4>
+                            <p>
+                              Dado que el estudio trata temas que pueden resultar sensibles, te informamos que en
+                              caso de sentirte incómodo/a o necesitar apoyo psicológico, podés comentarlo a la evaluadora
+                              o con tu profesional tratante en esta institución. Asimismo, dejamos a tu disposición recursos
+                              de atención en salud mental:
+                              </p>
+                            <ul className="list-disc list-inside space-y-1 text-sm">
+                              <li>
+                                Línea nacional gratuita de urgencias en salud mental (Hospital Bonaparte): 0800 999 0091.
+                              </li>
+                              <li>
+                                Línea nacional gratuita de violencia familiar, sexual y/o grooming (Ministerio de Justicia de la Nación): 137 (marcar opción 1).
+                              </li>
+                            </ul>
+                          </>
+                        ) : (
+                          <>
+                            <h4 className="font-semibold text-red-800 mb-2">Si requerís atención en salud mental, podés contactar a:</h4>
+                            <ul className="list-disc list-inside space-y-1 text-sm">
+                              <li>
+                                Línea nacional gratuita de urgencias en salud mental (Hospital Bonaparte): 0800 999 0091.
+                              </li>
+                              <li>
+                                Línea nacional gratuita de violencia familiar, sexual y/o grooming (Ministerio de Justicia de la Nación): 137 (marcar opción 1).
+                              </li>
+                            </ul>
+                          </>
+                        )}
+                      </div>
                       <div className="bg-blue-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-blue-800 mb-2">Bienvenido/a</h4>
-                        <p className="mb-2">
-                           Si sos <strong>mayor de 18 años</strong> y <strong>residís en Argentina</strong>,
-                          te invitamos a responder una encuesta poblacional denominada “Estudio sobre Experiencias Psicológicas
-                          y Conductas 2” que nuestro grupo de investigación de CONICET y la Universidad Nacional de Córdoba está distribuyendo a través de internet.
-                          Nuestro objetivo es identificar qué estados mentales en la población argentina se asocian con el riesgo de violencia. Con este conocimiento,
-                          podremos diseñar recomendaciones para disminuir este riesgo.
-                        </p>
+                          {submuestra !== null ? (
+                            <p className="mb-2">
+                              Si sos mayor de 18 años, residís en Argentina, te encontrás actualmente realizando un
+                              tratamiento o seguimiento profesional (en dispositivos de internación, consultorio externo u
+                              hospital de día), manifestaste en algún momento indicadores o síntomas del espectro
+                              psicótico y contás con la evaluación favorable de tu profesional tratante para participar, te
+                              invitamos a ser parte de la fase clínica del “Estudio sobre Experiencias Psicológicas y
+                              Conductas 2” que nuestro grupo de investigación del CONICET y la Universidad Nacional
+                              de Córdoba está llevando a cabo específicamente con usuarios de servicios de salud mental.
+                              Nuestro objetivo es identificar qué estados mentales se asocian con el riesgo de violencia.
+                              Con este conocimiento, podremos diseñar recomendaciones para disminuir este riesgo.
+                              </p>
+                          ) : (
+                            <p className="mb-2">
+                              Si sos <strong>mayor de 18 años</strong> y <strong>residís en Argentina</strong>, {TEXTOS_GENERAL.bienvenida}
+                            </p>
+                          )}
                       </div>
                       <div className="bg-green-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-green-800 mb-2">Metodología</h4>
-                        <p className="mb-2" >
-                          Te pedimos que, de manera <strong>voluntaria</strong>, respondas una serie de preguntas sobre tus experiencias psicológicas, tus conductas habituales en diferentes aspectos de tu vida y tu historia personal, incluidas posibles experiencias de victimización.
-                          Responder la encuesta te llevará entre 20 y 40 minutos. Tu participación no conlleva más riesgos que
-                          cierta incomodidad al compartir información de carácter personal.
-                          Te dejaremos contactos de servicios de salud mental en caso que desees consultar con un profesional.
-                        </p>
+                          {submuestra !== null ? (
+                            <p className="mb-2">
+                              Te pedimos que, de manera <strong>voluntaria</strong>, resuelvas tres pruebas cognitivas y respondas
+                              una serie de preguntas sobre tus experiencias psicológicas, tus conductas habituales en
+                              diferentes aspectos de tu vida y tu historia personal, incluidas posibles experiencias de
+                              victimización. En total, tu participación llevará aproximadamente entre 45 y 50 minutos. Es
+                              fundamental que sepas que aceptar o rechazar la invitación no afectará bajo ninguna
+                              circunstancia el tratamiento, seguimiento profesional ni la calidad de la atención que recibís
+                              actualmente o que vayas a recibir en el futuro en esta institución.
+                              </p>
+                          ) : (
+                            <p className="mb-2">
+                              Te pedimos que, de manera <strong>voluntaria</strong>, respondas una serie de preguntas sobre tus experiencias psicológicas, tus conductas habituales en diferentes aspectos de tu vida y tu historia personal, incluidas posibles experiencias de victimización. {textos.metodologia}
+                            </p>
+                          )}
                       </div>
                       <div className="bg-purple-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-purple-800 mb-2">Confidencialidad</h4>
-                        <p className="mb-2">
-                          No te solicitamos ningún dato que permita tu identificación personal como nombre, apellido o DNI.
-                          Tus respuestas sólo se emplearán a los fines de este estudio y se analizarán de manera grupal, así que no será
-                          posible conocer respuestas individuales.
-                          Es decir que <strong>tus respuestas son</strong> totalmente <strong>confidenciales</strong> y <strong>anónimas</strong>.
-                          Podés abandonar la encuesta en cualquier momento. Las respuestas que ya hayas brindado hasta ese momento quedarán guardadas, no pueden retirarse pues no tenemos forma de identificar la identidad de quien responde.
-                          Los datos se archivarán de manera segura en una plataforma virtual de la Universidad Nacional de Córdoba con acceso cifrado al que sólo tiene acceso el equipo de investigación.
-                          Si querés recibir información sobre tus resultados, al final de la encuesta tendrás la opción de solicitarlo. Este dato será guardado de manera separada, en un documento cifrado, para garantizar tu privacidad.
-                        </p>
+                          {submuestra !== null ? (
+                            <p className="mb-2">
+                              Tu participación no conlleva riesgos físicos. Algunas preguntas indagan sobre
+                              antecedentes psiquiátricos, internaciones, consumo de sustancias o conductas violentas, lo
+                              cual puede generarte incomodidad o malestar emocional al recordar situaciones sensibles. En
+                              caso de experimentar cualquier malestar durante o después de realizar esta encuesta, podés
+                              comentarlo con la investigadora presente o con tu profesional tratante (o el profesional de
+                              guardia) en esta institución. Asimismo, te dejaremos contactos de urgencia de servicios de
+                              salud mental.
+                              No te solicitamos ningún dato que permita tu identificación personal, como nombre,
+                              apellido o DNI: tus respuestas se registran únicamente con un código y se analizan de manera
+                              grupal, por lo que no es posible conocer respuestas individuales. Tus respuestas serán tratadas de manera estrictamente confidencial, y solo el equipo de investigación tiene acceso a ellas.
+                              La única excepción a esta confidencialidad es que, de identificarse un riesgo actual para tu
+                              vida o la de terceros, la investigadora podrá dar aviso a tu profesional tratante (o al de
+                              guardia) con el único fin de resguardar tu seguridad o la de otras personas. Podés abandonar
+                              la encuesta en cualquier momento sin ninguna consecuencia; sin embargo, una vez enviadas,
+                              las respuestas ya registradas no podrán retirarse en forma selectiva, ya que en la base de datos
+                              se identifican únicamente con un código. Los datos se archivarán de manera segura en una
+                              plataforma virtual de la Universidad Nacional de Córdoba, con acceso cifrado, al que solo
+                              tiene acceso el equipo de investigación.
+                              </p>
+                          ) : (
+                            <p className="mb-2">
+                              {textos.confidencialidad} Es decir que <strong>tus respuestas son</strong> totalmente <strong>confidenciales</strong> y <strong>anónimas</strong>.
+                            </p>
+                          )}
                       </div>
                       <div className="bg-yellow-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-yellow-800 mb-2">Justificación y utilidad de tu participación</h4>
-                        <p className="mb-2" >
-                          Con tu participación colaborás a mejorar el conocimiento sobre cómo ciertas experiencias psicológicas influyen en la conducta de las personas y, en consecuencia, mejorar la prevención de la violencia y aumentar el bienestar de las personas.
-                          No recibirás beneficio alguno por responder esta encuesta. A modo de agradecimiento por tu participación en el estudio, sortearemos premios entre quienes completen la encuesta.
-                          Al dar tu consentimiento informado (ver más abajo), no renunciás a los derechos que te otorga la Ley 25.326 de protección de datos
-                          personales. Los resultados del estudio podrán ser difundidos en eventos o publicaciones científicas sin incluir información que
-                          permita identificar a los participantes.
-                        </p>
+                          {submuestra !== null ? (
+                            <p className="mb-2">
+                              Con tu participación colaborás a mejorar el conocimiento sobre cómo ciertas
+                              experiencias psicológicas influyen en la conducta de las personas y, en consecuencia, mejorar
+                              la prevención de la violencia y aumentar el bienestar de las personas. No recibirás beneficio
+                              alguno por responder esta encuesta. Al dar tu consentimiento informado (ver más abajo), no
+                              renunciás a los derechos que te otorga la Ley 25.326 de protección de datos personales. Los
+                              resultados del estudio podrán ser difundidos en eventos o publicaciones científicas sin incluir
+                              información que permita identificar a los participantes.
+                            </p>
+                          ) : (
+                            <p className="mb-2">{textos.justificacion}</p>
+                          )}
                       </div>
                       <div className="bg-orange-50 p-3 sm:p-4 rounded-lg">
                         <h4 className="font-semibold text-orange-800 mb-3">Contactos</h4>
-                        <div className="space-y-4 text-sm">
+                          <div className="space-y-4 text-sm">
                           {/* Dudas como participante */}
                           <div>
                             <p className="font-medium  mb-2">Si tenés dudas como participante del estudio podés contactar a:</p>
@@ -414,7 +542,7 @@ export default function BARTTask() {
                               </li>
                             </ul>
                           </div>
-                        </div>
+                          </div>
                       </div>
                       {/* <div className="bg-orange-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-orange-800 mb-2">Contactos</h4>
@@ -465,18 +593,6 @@ export default function BARTTask() {
 
                         </div>
                       </div> */}
-                      <div className="bg-red-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-red-800 mb-2">Si requerís atención en salud mental, podés contactar a:</h4>
-                        <ul className="list-disc list-inside space-y-1 text-sm">
-                          <li>
-                            Línea nacional gratuita de urgencias en salud mental (Hospital Bonaparte): 0800 999 0091.
-                          </li>
-                          <li>
-                            Línea nacional gratuita de violencia familiar, sexual y/o grooming (Ministerio de Justicia de la Nación): 137 (marcar opción 1).
-                          </li>
-                        </ul>
-                      </div>
-
                     </div>
                   </div>
                 )}
@@ -599,7 +715,9 @@ export default function BARTTask() {
                     El punto de explosión es aleatorio y diferente para cada globo.
                   </li>
                 </ul>
-                <p className="mb-2">➡️ 💎 Completá toda la encuesta para conocer <strong>tu desempeño final en el juego 🪞😏</strong>.</p>
+                      {submuestra === null && (
+                        <p className="mb-2">➡️ 💎 Completá toda la encuesta para conocer <strong>tu desempeño final en el juego 🪞😏</strong>.</p>
+                      )}
               </div>
 
               <div className="flex justify-center">
@@ -654,9 +772,13 @@ export default function BARTTask() {
               </div>
 
               <div className="flex flex-col gap-3">
-                <Button onClick={handleReturnToSurvey} className="flex items-center gap-2 w-full">
+                <Button
+                  onClick={handleReturnToSurvey}
+                  disabled={countdown > 0 || yaRedirigido}
+                  className="flex items-center gap-2 w-full"
+                >
                   <span>➡️</span>
-                  Continuar a la Encuesta
+                  {countdown > 0 ? `Continuar a la Encuesta (${countdown})` : "Continuar a la Encuesta"}
                 </Button>
               </div>
 
