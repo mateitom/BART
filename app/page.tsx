@@ -342,7 +342,10 @@ export default function BARTTask() {
                             <p>
                               Dado que el estudio trata temas que pueden resultar sensibles, te informamos que en
                               caso de sentirte incómodo/a o necesitar apoyo psicológico, podés comentarlo a la evaluadora
-                              o con tu profesional tratante en esta institución. Asimismo, dejamos a tu disposición recursos
+                              o con tu profesional tratante en esta institución. 
+                              <br />
+                              <br />
+                              Asimismo, dejamos a tu disposición recursos
                               de atención en salud mental:
                               </p>
                             <ul className="list-disc list-inside space-y-1 text-sm">
@@ -373,7 +376,7 @@ export default function BARTTask() {
                           {submuestra !== null ? (
                             <p className="mb-2">
                               Si sos mayor de 18 años, residís en Argentina, te encontrás actualmente realizando un
-                              tratamiento o seguimiento profesional (en dispositivos de internación, consultorio externo u
+                              tratamiento o seguimiento profesional  (en dispositivos de internación, consultorio externo u
                               hospital de día), manifestaste en algún momento indicadores o síntomas del espectro
                               psicótico y contás con la evaluación favorable de tu profesional tratante para participar, te
                               invitamos a ser parte de la fase clínica del “Estudio sobre Experiencias Psicológicas y
@@ -406,20 +409,28 @@ export default function BARTTask() {
                             </p>
                           )}
                       </div>
+                      {submuestra !== null && (
+                      <div className="bg-pink-50 p-4 rounded-lg">
+                        <h4 className="font-semibold text-pink-800 mb-2">Riesgos</h4>
+                        <p className="mb-2">
+                          Tu participación <strong>no conlleva riesgos físicos</strong>. Algunas preguntas indagan sobre
+                          antecedentes psiquiátricos, internaciones, consumo de sustancias o conductas violentas, lo
+                          cual puede generarte incomodidad o malestar emocional al recordar situaciones sensibles. En
+                          caso de experimentar cualquier malestar durante o después de realizar esta encuesta, podés
+                          comentarlo con la investigadora presente o con tu profesional tratante (o el profesional de
+                          guardia) en esta institución. Asimismo, te dejaremos contactos de urgencia de servicios de
+                          salud mental.
+                        </p>
+                      </div>
+                      )}
                       <div className="bg-purple-50 p-4 rounded-lg">
                         <h4 className="font-semibold text-purple-800 mb-2">Confidencialidad</h4>
                           {submuestra !== null ? (
                             <p className="mb-2">
-                              Tu participación no conlleva riesgos físicos. Algunas preguntas indagan sobre
-                              antecedentes psiquiátricos, internaciones, consumo de sustancias o conductas violentas, lo
-                              cual puede generarte incomodidad o malestar emocional al recordar situaciones sensibles. En
-                              caso de experimentar cualquier malestar durante o después de realizar esta encuesta, podés
-                              comentarlo con la investigadora presente o con tu profesional tratante (o el profesional de
-                              guardia) en esta institución. Asimismo, te dejaremos contactos de urgencia de servicios de
-                              salud mental.
                               No te solicitamos ningún dato que permita tu identificación personal, como nombre,
                               apellido o DNI: tus respuestas se registran únicamente con un código y se analizan de manera
-                              grupal, por lo que no es posible conocer respuestas individuales. Tus respuestas serán tratadas de manera estrictamente confidencial, y solo el equipo de investigación tiene acceso a ellas.
+                              grupal, por lo que no es posible conocer respuestas individuales. Tus <strong>respuestas serán tratadas de manera estrictamente confidencial
+                              </strong>, y solo el equipo de investigación tiene acceso a ellas.
                               La única excepción a esta confidencialidad es que, de identificarse un riesgo actual para tu
                               vida o la de terceros, la investigadora podrá dar aviso a tu profesional tratante (o al de
                               guardia) con el único fin de resguardar tu seguridad o la de otras personas. Podés abandonar
