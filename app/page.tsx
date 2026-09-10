@@ -785,7 +785,7 @@ export default function BARTTask() {
               <div className="flex flex-col gap-3">
                 <Button
                   onClick={handleReturnToSurvey}
-                  disabled={countdown > 0 || yaRedirigido}
+                  disabled={countdown > 0}
                   className="flex items-center gap-2 w-full"
                 >
                   <span>➡️</span>
