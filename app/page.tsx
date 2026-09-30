@@ -22,10 +22,10 @@ const SURVEY_URL_GENERAL = "https://encuestas3.unc.edu.ar/index.php?r=survey/ind
 const SURVEY_URL_CLINICA = "https://encuestas3.unc.edu.ar/index.php?r=survey/index&sid=862472&lang=es"
 
 const VALID_SUBMUESTRA = [
-  "consultorio_interno",
   "consultorio_externo",
-  "casa_dia",
-  "guardia",
+  "hospital_dia",
+  "centro_adicciones",
+  "internacion",  
 ] as const
 
 type Submuestra = (typeof VALID_SUBMUESTRA)[number]
